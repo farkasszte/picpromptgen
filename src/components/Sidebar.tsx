@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   Cpu,
-  Settings,
   Key,
   Languages,
   GraduationCap,
@@ -12,10 +11,40 @@ import {
   RefreshCw,
   Edit3,
   Sparkles,
-  Wand2,
-  FileJson
+  Wand2
 } from 'lucide-react';
-import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES } from '../constants.jsx';
+import { 
+  CATEGORIES, 
+  AGE_GROUPS, 
+  LANGUAGES, 
+  INFOGRAPHIC_STYLES,
+  Template,
+  InfographicStyle
+} from '../constants';
+
+interface SidebarProps {
+  language: string;
+  setLanguage: (lang: string) => void;
+  ageGroup: string;
+  setAgeGroup: (age: string) => void;
+  activeCat: string;
+  setActiveCat: (cat: string) => void;
+  activeTemplate: Template;
+  setActiveTemplate: (template: Template) => void;
+  sortedTemplates: Template[];
+  apiKeyInput: string;
+  setApiKeyInput: (key: string) => void;
+  getLabel: (hu: string, en: string, zh: string) => string;
+  selectedStyle: InfographicStyle;
+  setSelectedStyle: (style: InfographicStyle) => void;
+  topic: string;
+  generateOutline: () => void;
+  generateStandardPrompt: () => void;
+  refineWithAI: () => void;
+  loading: { outline: boolean; ai: boolean };
+  outline: string;
+  prompts: { standard: string | null; ai: string | null };
+}
 
 export default function Sidebar({
   language,
@@ -39,9 +68,9 @@ export default function Sidebar({
   loading,
   outline,
   prompts
-}) {
-  const [hoveredTemplate, setHoveredTemplate] = useState(null);
-  const [hoveredStyle, setHoveredStyle] = useState(null);
+}: SidebarProps) {
+  const [hoveredTemplate, setHoveredTemplate] = useState<Template | null>(null);
+  const [hoveredStyle, setHoveredStyle] = useState<InfographicStyle | null>(null);
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [ageDropdownOpen, setAgeDropdownOpen] = useState(false);
@@ -82,7 +111,7 @@ export default function Sidebar({
 
         <button
           onClick={refineWithAI}
-          disabled={!prompts.standard || prompts.ai || loading.ai}
+          disabled={!prompts.standard || !!prompts.ai || loading.ai}
           className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!prompts.standard || prompts.ai ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 active:scale-95 shadow-lg'}`}
         >
           <div className="flex items-center gap-2">

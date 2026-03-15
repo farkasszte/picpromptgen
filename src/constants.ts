@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Presentation,
   BarChart3,
@@ -6,11 +7,54 @@ import {
   Palette
 } from 'lucide-react';
 
-export const CATEGORIES = {
+export interface Template {
+  id: string;
+  name: string;
+  task: string;
+  style: string;
+  composition: string;
+  elements: string;
+  palette: string;
+  lighting: string;
+  goal: string;
+}
+
+export interface Category {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  templates: Template[];
+}
+
+export interface Language {
+  id: string;
+  label: string;
+  flag: string;
+}
+
+export interface AgeGroup {
+  id: string;
+  label: string;
+}
+
+export interface LocalizedString {
+  hu: string;
+  en: string;
+  zh: string;
+}
+
+export interface InfographicStyle {
+  id: string;
+  name: LocalizedString;
+  description: LocalizedString;
+  prompt: string;
+}
+
+export const CATEGORIES: Record<string, Category> = {
   PRESENTATION: {
     id: 'presentation',
     label: 'Prezentáció és Diák',
-    icon: <Presentation className="w-4 h-4" />,
+    icon: React.createElement(Presentation, { className: "w-4 h-4" }),
     templates: [
       { id: 'p1', name: '5 diás előadásvázlat', task: 'Készítsen képet egy 5 diás előadásvázlatról a(z) [TOPIC] témában, biztosítva a logikus előrehaladást az "Előzetes tudás" szintjétől a "Haladó alkalmazásig".', style: 'Structured Academic Presentation', composition: 'Clean slide layouts, balanced text-to-visual ratio', elements: 'Progress indicators, section headers, focus points', palette: 'Professional blue and grey', lighting: 'Soft studio lighting', goal: 'Strukturált ismeretátadás.' },
       { id: 'p2', name: 'Nagy kép metafora', task: 'Készítsen képet egy "Nagy kép" dia leírásáról, amely egy központi metaforát használ a(z) [TOPIC] elmagyarázására.', style: 'Conceptual Metaphor Illustration', composition: 'Single dominant central icon with surrounding nodes', elements: 'Visual analogy, symbolic objects, simplified labels', palette: 'High-contrast symbolic colors', lighting: 'Dramatic focal light', goal: 'Kognitív horgony kialakítása.' },
@@ -28,7 +72,7 @@ export const CATEGORIES = {
   INFOGRAPHICS: {
     id: 'infographics',
     label: 'Infografika és Adat',
-    icon: <BarChart3 className="w-4 h-4" />,
+    icon: React.createElement(BarChart3, { className: "w-4 h-4" }),
     templates: [
       { id: 'i1', name: 'Anatómia vizualizáció', task: 'Készítsen képet egy "A(z) [TOPIC] anatómiája" típusú infografikáról, amely alkotórészeire bontja a fogalmat/tárgyat.', style: 'Exploded view technical illustration', composition: 'Central object with radial callouts', elements: 'Leader lines, detailed textures, component labels', palette: 'Naturalistic or technical colors', lighting: 'Ambient occlusion, detailed shadows', goal: 'Szerkezeti elemzés.' },
       { id: 'i2', name: 'Fejlődési idővonal', task: 'Készítsen képet egy "Fejlődési idővonalról" a(z) [TOPIC] témához, kiemelve az 5 legfontosabb fordulópontot.', style: 'Clean Linear Timeline', composition: 'Horizontal or zig-zag path', elements: 'Chronological markers, event icons, short descriptions', palette: 'Sequential color gradient', lighting: 'Even daylight', goal: 'Történeti kontextus megértése.' },
@@ -47,7 +91,7 @@ export const CATEGORIES = {
   SPATIAL: {
     id: 'spatial',
     label: 'Térbeli és Kapcsolati',
-    icon: <MapIcon className="w-4 h-4" />,
+    icon: React.createElement(MapIcon, { className: "w-4 h-4" }),
     templates: [
       { id: 's1', name: 'Tudástérkép', task: 'Készítsen képet egy "Tudástérkép" leírásról, amely bemutatja a(z) [TOPIC] interdiszciplináris kapcsolatait.', style: 'Cartographic Knowledge Map', composition: 'Island or network cluster view', elements: 'Bridge icons, terrain of concepts, connection lines', palette: 'Vintage map aesthetic', lighting: 'Warm parchment glow', goal: 'Rendszerszemléletű integráció.' },
       { id: 's2', name: 'Venn-diagram', task: 'Készítsen képet egy Venn-diagram leírásáról, azonosítva a(z) [TOPIC] egyedi és közös vonásait más releváns fogalmakkal.', style: 'Minimalist Overlap Diagram', composition: 'Intersecting circles with clear central labels', elements: 'Shaded intersection, distinct node icons', palette: 'Translucent primary colors', lighting: 'Flat graphic lighting', goal: 'Hasonlóságok és különbségek elemzése.' },
@@ -64,7 +108,7 @@ export const CATEGORIES = {
   DIAGRAMS: {
     id: 'diagrams',
     label: 'Modellek és Diagramok',
-    icon: <Network className="w-4 h-4" />,
+    icon: React.createElement(Network, { className: "w-4 h-4" }),
     templates: [
       { id: 'd1', name: 'Input–Process–Output', task: 'Készítsen képet egy Input–Process–Output rendszerdiagramról a(z) [TOPIC] folyamatához.', style: 'System Engineering Diagram', composition: 'Linear three-stage block layout', elements: 'Data stream icons, gear symbols, output result', palette: 'Industrial blue and orange', lighting: 'Clean tech lighting', goal: 'Folyamatoptimalizálás megértése.' },
       { id: 'd2', name: 'Hagyma–modell', task: 'Készítsen képet egy "Hagyma–modellről" a(z) [TOPIC] komplexitásának és rétegeinek elmagyarázására.', style: 'Concentric Circle Model', composition: 'Layered spheres with a core center', elements: 'Cutaway view, layer labels, depth indicators', palette: 'Monochromatic shades of blue', lighting: 'Internal core glow', goal: 'Mélységi elemzés.' },
@@ -81,7 +125,7 @@ export const CATEGORIES = {
   CREATIVE: {
     id: 'creative',
     label: 'Kreatív Tananyagok',
-    icon: <Palette className="w-4 h-4" />,
+    icon: React.createElement(Palette, { className: "w-4 h-4" }),
     templates: [
       { id: 'c1', name: 'Múzeumi tábla', task: 'Készítsen képet egy "Múzeumi tábláról": foglalja össze a(z) [TOPIC] lényegét nagyközönség számára.', style: 'Museum Exhibit Plaque', composition: 'Elegant typography-focused layout', elements: 'Artifact silhouette, timeline snippet, key fact box', palette: 'Museum grey and gold accents', lighting: 'High-end gallery spotlight', goal: 'Közérthető ismeretterjesztés.' },
       { id: 'c2', name: 'Esettanulmány pillanatkép', task: 'Készítsen képet egy "Esettanulmány pillanatképet" a(z) [TOPIC] témában.', style: 'Editorial Case Study Layout', composition: 'Vertical card style with sidebar', elements: 'Statistical graphs, quote marks, focus icon', palette: 'Academic journal aesthetic', lighting: 'Soft window light', goal: 'Gyakorlati alkalmazás.' },
@@ -97,19 +141,19 @@ export const CATEGORIES = {
   }
 };
 
-export const AGE_GROUPS = [
+export const AGE_GROUPS: AgeGroup[] = [
   { id: '10-14', label: '10–14 év (alapfok)' },
   { id: '14-18', label: '14–18 év (középfok)' },
   { id: '18+', label: '18+ év (felsőfok)' }
 ];
 
-export const LANGUAGES = [
+export const LANGUAGES: Language[] = [
   { id: 'hu', label: 'Magyar', flag: 'HU' },
   { id: 'en', label: 'Angol', flag: 'EN' },
   { id: 'zh', label: 'Mandarin', flag: 'CN' }
 ];
 
-export const INFOGRAPHIC_STYLES = [
+export const INFOGRAPHIC_STYLES: InfographicStyle[] = [
   { 
     id: 'default', 
     name: { hu: 'Alapértelmezett', en: 'Default', zh: '默认' }, 
@@ -203,7 +247,7 @@ export const INFOGRAPHIC_STYLES = [
   { 
     id: 'chalkboard', 
     name: { hu: 'Kréta és tábla', en: 'Chalkboard', zh: '粉笔板' }, 
-    description: { hu: 'Klasszikus iskolai tábla stílus, kréta textúrával.', en: 'Classic chalkboard style with chalk texture.', zh: '带有粉笔纹理的经典粉笔板风格。' },
+    description: { hu: 'Klasszikus iskolai tábla stílus, kréta textúrával.', en: 'Classic chalkboard style with chalk texture.', zh: '带有粉笔纹理s classic aschool board stílus.' },
     prompt: 'Classic chalkboard style, white and colored chalk texture on a dark slate background. Hand-drawn diagrams, dusty textures, smudged erasures, educational classroom aesthetic.' 
   },
   { 

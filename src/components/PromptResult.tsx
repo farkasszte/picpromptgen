@@ -1,11 +1,8 @@
 import {
-  Zap,
   Edit3,
-  Layout,
   Code2,
   CheckCircle2,
   Palette,
-  BarChart3,
   Check,
   Copy,
   Key,
@@ -14,9 +11,25 @@ import {
   ShieldCheck
 } from 'lucide-react';
 
+interface Prompts {
+  standard: string | null;
+  ai: string | null;
+  aiParams?: string;
+}
+
+interface PromptResultProps {
+  activeTab: string;
+  outline: string;
+  setOutline: (outline: string) => void;
+  prompts: Prompts;
+  setPrompts: (prompts: any) => void;
+  copyStatus: Record<string, boolean>;
+  copyToClipboard: (id: string, text: string) => void;
+  getLabel: (hu: string, en: string, zh: string) => string;
+}
+
 export default function PromptResult({
   activeTab,
-  setActiveTab,
   outline,
   setOutline,
   prompts,
@@ -24,9 +37,9 @@ export default function PromptResult({
   copyStatus,
   copyToClipboard,
   getLabel
-}) {
+}: PromptResultProps) {
 
-  const renderSingleResult = (content, isJson = false) => {
+  const renderSingleResult = (content: string | null, isJson = false) => {
     if (!content) return null;
     
     // Determine header based on active tab

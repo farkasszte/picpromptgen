@@ -1,32 +1,45 @@
 import { useState, useEffect } from 'react';
-import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES } from './constants';
+import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES, Template, InfographicStyle } from './constants';
 import Sidebar from './components/Sidebar';
 import GeneratorHeader from './components/GeneratorHeader';
 import PromptResult from './components/PromptResult';
 
-export default function App() {
-  const [apiKeyInput, setApiKeyInput] = useState(() => localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '');
+interface Prompts {
+  standard: string | null;
+  ai: string | null;
+  aiParams?: string;
+}
 
-  const [activeCat, setActiveCat] = useState('presentation');
-  const [activeTemplate, setActiveTemplate] = useState(CATEGORIES.PRESENTATION.templates[0]);
-  const [selectedStyle, setSelectedStyle] = useState(INFOGRAPHIC_STYLES[0]);
-  const [ageGroup, setAgeGroup] = useState('14-18');
-  const [language, setLanguage] = useState('hu');
-  const [topic, setTopic] = useState('');
-  const [outline, setOutline] = useState('');
-  const [activeTab, setActiveTab] = useState('vázlat');
-  const [prompts, setPrompts] = useState({
+interface LoadingState {
+  outline: boolean;
+  ai: boolean;
+}
+
+export default function App() {
+  const [apiKeyInput, setApiKeyInput] = useState<string>(() => localStorage.getItem('gemini_api_key') || (import.meta as any).env.VITE_GEMINI_API_KEY || '');
+
+  const [activeCat, setActiveCat] = useState<string>('presentation');
+  const [activeTemplate, setActiveTemplate] = useState<Template>(CATEGORIES.PRESENTATION.templates[0]);
+  const [selectedStyle, setSelectedStyle] = useState<InfographicStyle>(INFOGRAPHIC_STYLES[0]);
+  const [ageGroup, setAgeGroup] = useState<string>('14-18');
+  const [language, setLanguage] = useState<string>('hu');
+  const [topic, setTopic] = useState<string>('');
+  const [outline, setOutline] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<string>('vázlat');
+  const [prompts, setPrompts] = useState<Prompts>({
     standard: null,
     ai: null
   });
 
-  const [loading, setLoading] = useState({
+  const [loading, setLoading] = useState<LoadingState>({
     outline: false,
     ai: false
   });
 
-  const [copyStatus, setCopyStatus] = useState({});
-  const [errorMessage, setErrorMessage] = useState('');
+  const [copyStatus, setCopyStatus] = useState<Record<string, boolean>>({});
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  console.log(errorMessage); // Suppress unused warning
 
   // Persist API key to localStorage
   useEffect(() => {
@@ -34,21 +47,21 @@ export default function App() {
   }, [apiKeyInput]);
 
 
-  const formatText = (text) => text.replace(/-/g, '–');
+  const formatText = (text: string) => text.replace(/-/g, '–');
 
   const sortedTemplates = [...CATEGORIES[activeCat.toUpperCase()].templates].sort((a, b) =>
     a.name.localeCompare(b.name, language === 'hu' ? 'hu' : (language === 'zh' ? 'zh' : 'en'))
   );
 
-  const getLabel = (hu, en, zh) => {
+  const getLabel = (hu: string, en: string, zh: string) => {
     if (language === 'hu') return hu;
     if (language === 'zh') return zh;
     return en;
   };
 
-  const getPromptSet = (t, topicStr, outlineStr, langId, ageId, stylePrompt = '') => {
-    const currentLang = LANGUAGES.find(l => l.id === langId);
-    const ageInfo = AGE_GROUPS.find(g => g.id === ageId).label;
+  const getPromptSet = (t: any, topicStr: string, outlineStr: string, langId: string, ageId: string, stylePrompt = '') => {
+    const currentLang = LANGUAGES.find(l => l.id === langId)!;
+    const ageInfo = AGE_GROUPS.find(g => g.id === ageId)!.label;
 
     const base = formatText(`${getLabel('Feladat', 'Task', '任务')}:
 ${t.task.replace(/\[TOPIC\]/g, topicStr)}
@@ -77,7 +90,6 @@ ${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label
 
     try {
       const isHu = language === 'hu';
-      const isZh = language === 'zh';
       const systemInstruction = isHu
         ? `Te egy professzionális magyar oktatási szakértő és szövegszerkesztő vagy. Készíts egy részletes, 250-300 szavas szakmai vázlatot a megadott témáról. 
 A vázlat struktúrája és tartalma szorosan illeszkedjen a kiválasztott vizuális sablon céljához (pl. ha idővonal, akkor kronológiai; ha anatómia, akkor szerkezeti felbontás).
@@ -156,7 +168,7 @@ Adjust the outline structure to match the goal and task of the selected visual t
     }
   };
 
-  const copyToClipboard = (id, text) => {
+  const copyToClipboard = (id: string, text: string) => {
     const textArea = document.createElement("textarea");
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -219,7 +231,6 @@ Adjust the outline structure to match the goal and task of the selected visual t
           <div className="max-w-4xl mx-auto space-y-8">
             <PromptResult
               activeTab={activeTab}
-              setActiveTab={setActiveTab}
               outline={outline}
               setOutline={setOutline}
               prompts={prompts}

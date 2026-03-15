@@ -1,28 +1,39 @@
 import {
   Search,
-  RefreshCw,
   Edit3,
-  Sparkles,
-  Wand2,
-  FileJson,
   Layout,
-  Zap,
-  Code2
+  Zap
 } from 'lucide-react';
+
+interface Prompts {
+  standard: string | null;
+  ai: string | null;
+}
+
+interface GeneratorHeaderProps {
+  topic: string;
+  setTopic: (topic: string) => void;
+  generateOutline: () => void;
+  generateStandardPrompt: () => void;
+  refineWithAI: () => void;
+  loading: { outline: boolean; ai: boolean };
+  outline: string;
+  prompts: Prompts;
+  getLabel: (hu: string, en: string, zh: string) => string;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
 
 export default function GeneratorHeader({
   topic,
   setTopic,
   generateOutline,
-  generateStandardPrompt,
-  refineWithAI,
-  loading,
-  outline,
-  prompts,
   getLabel,
   activeTab,
-  setActiveTab
-}) {
+  setActiveTab,
+  outline,
+  prompts
+}: GeneratorHeaderProps) {
   return (
     <header className="p-4 bg-zinc-900/20 border-b border-zinc-900">
       <div className="max-w-6xl mx-auto flex flex-col gap-8">
