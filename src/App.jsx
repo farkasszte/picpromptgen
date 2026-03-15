@@ -17,14 +17,12 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('vázlat');
   const [prompts, setPrompts] = useState({
     standard: null,
-    ai: null,
-    json: null
+    ai: null
   });
 
   const [loading, setLoading] = useState({
     outline: false,
-    ai: false,
-    json: false
+    ai: false
   });
 
   const [copyStatus, setCopyStatus] = useState({});
@@ -51,7 +49,6 @@ export default function App() {
   const getPromptSet = (t, topicStr, outlineStr, langId, ageId, stylePrompt = '') => {
     const currentLang = LANGUAGES.find(l => l.id === langId);
     const ageInfo = AGE_GROUPS.find(g => g.id === ageId).label;
-    const isHu = langId === 'hu';
 
     const base = formatText(`${getLabel('Feladat', 'Task', '任务')}:
 ${t.task.replace(/\[TOPIC\]/g, topicStr)}
@@ -70,33 +67,7 @@ ${stylePrompt ? `– Visual Theme: ${stylePrompt}` : ''}
 ${getLabel('Oktatási cél', 'Educational Goal', '教育目标')}: ${t.goal}
 ${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label} (${ageInfo})`);
 
-    const infographic = formatText(`${getLabel('Képalkotási feladat: Rendszerszemléletű oktatási infografika', 'Image Generation Task: Systems-oriented Educational Infographic', '图像生成任务：系统导向的教育信息图')}
-
-Style: Educational Infographic Style + ${t.style} ${stylePrompt ? `+ ${stylePrompt}` : ''}
-
-Content Blocks (Based on: ${topicStr}):
-1️⃣ ${getLabel('Alapfogalmak: Definíció és eredet', 'Basics: Definition and origin', '基础概念：定义与起源')}
-2️⃣ ${getLabel('Struktúra: A téma belső felépítése', 'Structure: Internal build of the topic', '结构：主题的内部构建')}
-3️⃣ ${getLabel('Hatások: Folyamatok és következmények', 'Impacts: Processes and consequences', '影响：过程与结果')}
-4️⃣ ${getLabel('Jelentőség: Korosztályi relevancia', 'Significance: Relevance for the age group', '意义：受众相关性')} (${ageInfo})
-
-Graphic Elements:
-Use educational icons, process arrows, and a structured layout. Labels in ${currentLang.label}.`);
-
-    const slide = formatText(`${getLabel('Képalkotási feladat: Prezentációs dia', 'Image Generation Task: Presentation Slide', '图像生成任务：演示幻灯片')}
-
-Slide Title: "${topicStr} – ${getLabel('Áttekintés', 'Overview', '概述')}"
-
-Central Visual:
-${t.composition} of ${topicStr} in ${t.style}.
-
-Supporting Elements:
-Icons and labels in ${currentLang.label} based on the outline.
-
-Caption:
-${getLabel(`Átfogó vizuális útmutató a(z) ${topicStr} témakörhöz (${ageInfo}).`, `A comprehensive visual guide to ${topicStr} (${ageInfo}).`, `针对 ${ageInfo} 的 ${topicStr} 视觉指南。`)}`);
-
-    return { base, infographic, slide };
+    return base;
   };
 
   const generateOutline = async () => {
@@ -141,8 +112,8 @@ SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
   const generateStandardPrompt = () => {
     if (!topic || !outline) return;
     const stylePrompt = selectedStyle.prompt;
-    const standardPrompts = getPromptSet(activeTemplate, topic, outline, language, ageGroup, stylePrompt);
-    setPrompts({ standard: standardPrompts, ai: null, json: null });
+    const standardPrompt = getPromptSet(activeTemplate, topic, outline, language, ageGroup, stylePrompt);
+    setPrompts({ standard: standardPrompt, ai: null });
     setActiveTab('standard');
   };
 
@@ -169,30 +140,18 @@ SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
       const result = await response.json();
       const refinedData = JSON.parse(result.candidates[0].content.parts[0].text);
 
-      const aiPrompts = getPromptSet(refinedData, topic, outline, language, ageGroup, selectedStyle.prompt);
-      setPrompts(prev => ({ ...prev, ai: aiPrompts }));
+      const aiPrompt = getPromptSet(refinedData, topic, outline, language, ageGroup, selectedStyle.prompt);
+      setPrompts(prev => ({ 
+        ...prev, 
+        ai: aiPrompt,
+        aiParams: JSON.stringify(refinedData, null, 2)
+      }));
       setActiveTab('ai');
     } catch (error) {
       setErrorMessage(getLabel("Hiba az AI finomítás során.", "AI processing error.", "AI 细化错误。"));
     } finally {
       setLoading(prev => ({ ...prev, ai: false }));
     }
-  };
-
-  const generateJsonSpec = async () => {
-    if (!topic || !prompts.standard) return;
-    setLoading(prev => ({ ...prev, json: true }));
-
-    const currentSet = prompts.ai || prompts.standard;
-    const jsonBlocks = {
-      base: JSON.stringify({ type: "visual_recon", content: currentSet.base }, null, 2),
-      infographic: JSON.stringify({ type: "infographic", content: currentSet.infographic }, null, 2),
-      slide: JSON.stringify({ type: "slide", content: currentSet.slide }, null, 2)
-    };
-
-    setPrompts(prev => ({ ...prev, json: jsonBlocks }));
-    setActiveTab('json');
-    setLoading(prev => ({ ...prev, json: false }));
   };
 
   const copyToClipboard = (id, text) => {
@@ -234,7 +193,6 @@ SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
         generateOutline={generateOutline}
         generateStandardPrompt={generateStandardPrompt}
         refineWithAI={refineWithAI}
-        generateJsonSpec={generateJsonSpec}
         loading={loading}
         outline={outline}
         prompts={prompts}
@@ -247,7 +205,6 @@ SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
           generateOutline={generateOutline}
           generateStandardPrompt={generateStandardPrompt}
           refineWithAI={refineWithAI}
-          generateJsonSpec={generateJsonSpec}
           loading={loading}
           outline={outline}
           prompts={prompts}

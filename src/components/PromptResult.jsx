@@ -26,36 +26,36 @@ export default function PromptResult({
   getLabel
 }) {
 
-  const renderPromptGrid = (set, isJson = false) => {
-    if (!set) return null;
-    const headers = {
-      base: getLabel('1. Vizuális Rekonstrukció', '1. Visual Reconstruction', '1. 视觉重建'),
-      infographic: getLabel('2. Infografika–változat', '2. Infographic Version', '2. 信息图版本'),
-      slide: getLabel('3. Dia / Slide változat', '3. Slide Version', '3. 幻灯片版本')
-    };
+  const renderSingleResult = (content, isJson = false) => {
+    if (!content) return null;
+    
+    // Determine header based on active tab
+    const header = activeTab === 'standard' 
+      ? getLabel('Generált Prompt', 'Generated Prompt', '生成的提示词')
+      : activeTab === 'ai'
+      ? getLabel('AI Finomított Prompt', 'AI Refined Prompt', 'AI 细化提示词')
+      : '';
+
+    const icon = <Palette className="w-4 h-4" />;
 
     return (
-      <div className="space-y-10">
-        {Object.keys(headers).map(key => (
-          <div key={key} className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className={`flex items-center gap-2 ${key === 'base' ? 'text-blue-400' : key === 'infographic' ? 'text-emerald-400' : 'text-orange-400'}`}>
-                {key === 'base' ? <Palette className="w-4 h-4" /> : key === 'infographic' ? <BarChart3 className="w-4 h-4" /> : <Layout className="w-4 h-4" />}
-                <h3 className="text-xs font-black uppercase tracking-widest">{headers[key]}</h3>
-              </div>
-              <button
-                onClick={() => copyToClipboard(`${activeTab}-${key}`, set[key])}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${copyStatus[`${activeTab}-${key}`] ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white'}`}
-              >
-                {copyStatus[`${activeTab}-${key}`] ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                {copyStatus[`${activeTab}-${key}`] ? getLabel('MÁSOLVA', 'COPIED', '已复制') : getLabel('MÁSOLÁS', 'COPY', '复制')}
-              </button>
-            </div>
-            <div className={`p-8 rounded-3xl border shadow-2xl transition-all ${isJson ? 'bg-zinc-900/80 border-zinc-700/50' : 'bg-zinc-900 border-zinc-800'}`}>
-              <pre className={`font-mono leading-relaxed whitespace-pre-wrap ${isJson ? 'text-xs text-zinc-400' : 'text-sm text-zinc-300'}`}>{set[key]}</pre>
-            </div>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2 text-zinc-100">
+            {icon}
+            <h3 className="text-xs font-black uppercase tracking-widest">{header}</h3>
           </div>
-        ))}
+          <button
+            onClick={() => copyToClipboard(activeTab, content)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${copyStatus[activeTab] ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white'}`}
+          >
+            {copyStatus[activeTab] ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            {copyStatus[activeTab] ? getLabel('MÁSOLVA', 'COPIED', '已复制') : getLabel('MÁSOLÁS', 'COPY', '复制')}
+          </button>
+        </div>
+        <div className={`p-8 rounded-3xl border shadow-2xl transition-all ${isJson ? 'bg-zinc-900/80 border-zinc-700/50' : 'bg-zinc-900 border-zinc-800'}`}>
+          <pre className={`font-mono leading-relaxed whitespace-pre-wrap ${isJson ? 'text-xs text-zinc-400' : 'text-sm text-zinc-300'}`}>{content}</pre>
+        </div>
       </div>
     );
   };
@@ -145,7 +145,7 @@ export default function PromptResult({
                 value={outline}
                 onChange={(e) => {
                   setOutline(e.target.value);
-                  setPrompts({ standard: null, ai: null, json: null }); // Reset prompts if outline changes
+                  setPrompts({ standard: null, ai: null }); // Reset prompts if outline changes
                 }}
                 className="w-full h-[500px] p-8 bg-transparent text-zinc-300 font-mono text-sm focus:outline-none resize-none custom-scrollbar"
                 placeholder="..."
@@ -157,9 +157,27 @@ export default function PromptResult({
             </div>
           </div>
         )}
-        {activeTab === 'standard' && renderPromptGrid(prompts.standard)}
-        {activeTab === 'ai' && renderPromptGrid(prompts.ai)}
-        {activeTab === 'json' && renderPromptGrid(prompts.json, true)}
+        {activeTab === 'standard' && renderSingleResult(prompts.standard)}
+        {activeTab === 'ai' && (
+          <div className="space-y-12">
+            {renderSingleResult(prompts.ai)}
+            {prompts.aiParams && (
+              <div className="pt-6 border-t border-zinc-800/50">
+                <div className="flex items-center gap-2 mb-4 px-2 text-blue-400/80">
+                  <Code2 className="w-4 h-4" />
+                  <h3 className="text-[10px] font-black uppercase tracking-widest">
+                    {getLabel('AI Által Finomított Paraméterek (JSON)', 'AI Refined Parameters (JSON)', 'AI 细化参数 (JSON)')}
+                  </h3>
+                </div>
+                <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800/50">
+                  <pre className="font-mono text-[11px] text-zinc-500 leading-relaxed whitespace-pre-wrap">
+                    {prompts.aiParams}
+                  </pre>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

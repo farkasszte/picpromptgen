@@ -36,7 +36,6 @@ export default function Sidebar({
   generateOutline,
   generateStandardPrompt,
   refineWithAI,
-  generateJsonSpec,
   loading,
   outline,
   prompts
@@ -92,16 +91,6 @@ export default function Sidebar({
           </div>
         </button>
 
-        <button
-          onClick={generateJsonSpec}
-          disabled={!prompts.standard || prompts.json || loading.json}
-          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!prompts.standard || prompts.json ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 active:scale-95 shadow-lg'}`}
-        >
-          <div className="flex items-center gap-2">
-            {loading.json ? <RefreshCw className="w-3 h-3 animate-spin" /> : <FileJson className="w-3 h-3" />}
-            <span>4. JSON Spec</span>
-          </div>
-        </button>
       </div>
 
       {/* API Key Settings */}

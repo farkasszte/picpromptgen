@@ -16,7 +16,6 @@ export default function GeneratorHeader({
   generateOutline,
   generateStandardPrompt,
   refineWithAI,
-  generateJsonSpec,
   loading,
   outline,
   prompts,
@@ -68,13 +67,6 @@ export default function GeneratorHeader({
                 className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'ai' ? 'bg-zinc-800 text-purple-400 shadow-lg border border-zinc-700' : 'text-zinc-600 hover:text-zinc-400'} disabled:opacity-20`}
               >
                 <Zap className="w-3.5 h-3.5" /> AI {getLabel('Finomított', 'Refined', '优化')}
-              </button>
-              <button
-                onClick={() => setActiveTab('json')}
-                disabled={!prompts.json}
-                className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'json' ? 'bg-zinc-800 text-emerald-400 shadow-lg border border-zinc-700' : 'text-zinc-600 hover:text-zinc-400'} disabled:opacity-20`}
-              >
-                <Code2 className="w-3.5 h-3.5" /> JSON {getLabel('Struktúra', 'Structure', '结构')}
               </button>
             </div>
           </div>
