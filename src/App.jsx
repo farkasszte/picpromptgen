@@ -123,8 +123,8 @@ SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
     setErrorMessage('');
 
     try {
-      const systemInstruction = `You are a professional educational technologist. Refine the visual prompt. Always replace dashes with the minus sign (–). Return JSON with: task, style, composition, elements, palette, lighting, goal. Use English for visual parameters.`;
-      const userMsg = `Topic: ${topic}. Outline: ${outline}. Template: ${activeTemplate.name}. Age: ${ageGroup}. Respond in JSON.`;
+      const systemInstruction = `You are a professional educational technologist. Refine the visual prompt. Always replace dashes with the minus sign (–). Return JSON with these keys: task, style, composition, elements, palette, lighting, goal, language, age_group. Use English for visual parameters. Populate language and age_group with the provided values.`;
+      const userMsg = `Topic: ${topic}. Outline: ${outline}. Template: ${activeTemplate.name}. Language: ${language}. Age Group: ${ageGroup}. Respond in JSON.`;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKeyInput.trim()}`, {
         method: 'POST',

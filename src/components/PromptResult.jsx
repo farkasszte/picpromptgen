@@ -77,7 +77,7 @@ export default function PromptResult({
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-all">
               <ExternalLink className="w-12 h-12" />
             </div>
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-black mb-4 shadow-lg shadow-blue-500/20">1</div>
+            <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-xs font-black mb-4 shadow-lg shadow-emerald-600/20">1</div>
             <h3 className="font-bold text-zinc-200 mb-2">Google AI Studio</h3>
             <p className="text-xs text-zinc-500 leading-relaxed mb-4">
               {getLabel('Látogass el a hivatalos Google AI Studio oldalra.', 'Visit the official Google AI Studio website.', '访问官方 Google AI Studio 网站。')}
@@ -86,7 +86,7 @@ export default function PromptResult({
               href="https://aistudio.google.com/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-blue-400 text-[10px] font-black uppercase tracking-widest hover:text-blue-300 transition-colors"
+              className="inline-flex items-center gap-2 text-emerald-500 text-[10px] font-black uppercase tracking-widest hover:text-emerald-400 transition-colors"
             >
               aistudio.google.com <ExternalLink className="w-3 h-3" />
             </a>
@@ -108,10 +108,10 @@ export default function PromptResult({
 
           {/* Step 3 */}
           <div className="bg-zinc-900/40 p-6 rounded-3xl border border-zinc-800/50 hover:bg-zinc-900/60 transition-all group relative overflow-hidden text-zinc-100">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-all text-blue-500">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-all text-emerald-600">
               <Settings className="w-12 h-12" />
             </div>
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-black mb-4 shadow-lg shadow-blue-500/20">3</div>
+            <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-xs font-black mb-4 shadow-lg shadow-emerald-600/20">3</div>
             <h3 className="font-bold text-zinc-200 mb-2">
               {getLabel('Beállítás', 'Setup', '设置')}
             </h3>
@@ -163,7 +163,7 @@ export default function PromptResult({
             {renderSingleResult(prompts.ai)}
             {prompts.aiParams && (
               <div className="pt-6 border-t border-zinc-800/50">
-                <div className="flex items-center gap-2 mb-4 px-2 text-blue-400/80">
+                <div className="flex items-center gap-2 mb-4 px-2 text-emerald-500/80">
                   <Code2 className="w-4 h-4" />
                   <h3 className="text-[10px] font-black uppercase tracking-widest">
                     {getLabel('AI Által Finomított Paraméterek (JSON)', 'AI Refined Parameters (JSON)', 'AI 细化参数 (JSON)')}

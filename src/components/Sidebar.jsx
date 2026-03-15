@@ -51,7 +51,7 @@ export default function Sidebar({
   return (
     <aside className="w-full md:w-80 bg-zinc-900 border-r border-zinc-800 flex flex-col shrink-0 relative">
       <div className="p-6 border-b border-zinc-800 flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-blue-500">
+        <div className="flex items-center gap-2 text-emerald-600">
           <Cpu className="w-5 h-5" />
           <span className="text-sm font-black uppercase tracking-tighter">Vizuál–Edu</span>
         </div>
@@ -72,7 +72,7 @@ export default function Sidebar({
         <button
           onClick={generateStandardPrompt}
           disabled={!outline || loading.outline}
-          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!outline ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500 active:scale-95 shadow-lg'}`}
+          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!outline ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-500 active:scale-95 shadow-lg'}`}
         >
           <div className="flex items-center gap-2">
             <Sparkles className="w-3 h-3" />
@@ -106,7 +106,7 @@ export default function Sidebar({
               placeholder="API kulcs..."
               value={apiKeyInput}
               onChange={(e) => setApiKeyInput(e.target.value)}
-              className="w-full bg-zinc-950/50 border border-zinc-800 text-[10px] rounded-lg py-1 px-3 focus:outline-none focus:border-blue-500/50 focus:bg-zinc-950 transition-all placeholder:text-zinc-700"
+              className="w-full bg-zinc-950/50 border border-zinc-800 text-[10px] rounded-lg py-1 px-3 focus:outline-none focus:border-emerald-600/50 focus:bg-zinc-950 transition-all placeholder:text-zinc-700"
             />
           </div>
         </div>
@@ -130,7 +130,7 @@ export default function Sidebar({
                   setStyleDropdownOpen(false);
                   setTmplDropdownOpen(false);
                 }}
-                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
               >
                 <span className="truncate">{LANGUAGES.find(l => l.id === language)?.flag} {LANGUAGES.find(l => l.id === language)?.label}</span>
                 <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${langDropdownOpen ? 'rotate-90' : ''}`} />
@@ -145,10 +145,10 @@ export default function Sidebar({
                         setLanguage(l.id);
                         setLangDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${language === l.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${language === l.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                     >
                       <span>{l.flag} {l.label}</span>
-                      {language === l.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                      {language === l.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
                     </button>
                   ))}
                 </div>
@@ -172,7 +172,7 @@ export default function Sidebar({
                   setStyleDropdownOpen(false);
                   setTmplDropdownOpen(false);
                 }}
-                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
               >
                 <span className="truncate">{AGE_GROUPS.find(g => g.id === ageGroup)?.label}</span>
                 <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${ageDropdownOpen ? 'rotate-90' : ''}`} />
@@ -187,10 +187,10 @@ export default function Sidebar({
                         setAgeGroup(g.id);
                         setAgeDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${ageGroup === g.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${ageGroup === g.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                     >
                       <span>{getLabel(g.label, g.label, g.label)}</span>
-                      {ageGroup === g.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                      {ageGroup === g.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
                     </button>
                   ))}
                 </div>
@@ -215,7 +215,7 @@ export default function Sidebar({
                 setStyleDropdownOpen(false);
                 setTmplDropdownOpen(false);
               }}
-              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
             >
               <span className="truncate">{CATEGORIES[activeCat.toUpperCase()]?.label}</span>
               <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${catDropdownOpen ? 'rotate-90' : ''}`} />
@@ -231,10 +231,10 @@ export default function Sidebar({
                       setActiveTemplate(CATEGORIES[cat.id.toUpperCase()].templates[0]);
                       setCatDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${activeCat === cat.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${activeCat === cat.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                   >
                     <span>{getLabel(cat.label, cat.label, cat.label)}</span>
-                    {activeCat === cat.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                    {activeCat === cat.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
                   </button>
                 ))}
               </div>
@@ -258,7 +258,7 @@ export default function Sidebar({
                 setCatDropdownOpen(false);
                 setStyleDropdownOpen(false);
               }}
-              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
             >
               <span className="truncate">{activeTemplate.name}</span>
               <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${tmplDropdownOpen ? 'rotate-90' : ''}`} />
@@ -276,10 +276,10 @@ export default function Sidebar({
                     }}
                     onMouseEnter={() => setHoveredTemplate(tmpl)}
                     onMouseLeave={() => setHoveredTemplate(null)}
-                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${activeTemplate.id === tmpl.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${activeTemplate.id === tmpl.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                   >
                     <span className="truncate">{tmpl.name}</span>
-                    {activeTemplate.id === tmpl.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                    {activeTemplate.id === tmpl.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
                   </button>
                 ))}
               </div>
@@ -304,7 +304,7 @@ export default function Sidebar({
                 setCatDropdownOpen(false);
                 setTmplDropdownOpen(false);
               }}
-              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
             >
               <span className="truncate">{getLabel(selectedStyle.name.hu, selectedStyle.name.en, selectedStyle.name.zh)}</span>
               <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${styleDropdownOpen ? 'rotate-90' : ''}`} />
@@ -322,10 +322,10 @@ export default function Sidebar({
                     }}
                     onMouseEnter={() => setHoveredStyle(style)}
                     onMouseLeave={() => setHoveredStyle(null)}
-                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${selectedStyle.id === style.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${selectedStyle.id === style.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                   >
                     <span>{getLabel(style.name.hu, style.name.en, style.name.zh)}</span>
-                    {selectedStyle.id === style.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                    {selectedStyle.id === style.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
                   </button>
                 ))}
               </div>
@@ -337,7 +337,7 @@ export default function Sidebar({
         {hoveredTemplate && (
           <div className="hidden md:block absolute left-full top-0 ml-4 w-80 bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 rounded-2xl shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-left-4 duration-200">
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-blue-400 mb-2">
+              <div className="flex items-center gap-2 text-emerald-500 mb-2">
                 <FileText className="w-4 h-4" />
                 <span className="text-xs font-black uppercase tracking-tighter">Sablon leírás</span>
               </div>
@@ -360,7 +360,7 @@ export default function Sidebar({
                 </section>
 
                 <div className="pt-2 flex flex-wrap gap-2">
-                  <span className="px-2 py-0.5 rounded bg-blue-500/10 text-[10px] font-bold text-blue-400 border border-blue-500/20">
+                  <span className="px-2 py-0.5 rounded bg-emerald-600/10 text-[10px] font-bold text-emerald-500 border border-emerald-600/20">
                     {hoveredTemplate.style}
                   </span>
                   <span className="px-2 py-0.5 rounded bg-zinc-800 text-[10px] font-bold text-zinc-400 border border-zinc-700">
@@ -376,7 +376,7 @@ export default function Sidebar({
         {hoveredStyle && (
           <div className="hidden md:block absolute left-full top-0 ml-4 w-80 bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 rounded-2xl shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-left-4 duration-200">
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-blue-400 mb-2">
+              <div className="flex items-center gap-2 text-emerald-500 mb-2">
                 <Palette className="w-4 h-4" />
                 <span className="text-xs font-black uppercase tracking-tighter">Stílus leírás</span>
               </div>
@@ -394,7 +394,7 @@ export default function Sidebar({
                 </section>
 
                 <div className="pt-2 flex flex-wrap gap-2">
-                  <span className="px-2 py-0.5 rounded bg-blue-500/10 text-[10px] font-bold text-blue-400 border border-blue-500/20">
+                  <span className="px-2 py-0.5 rounded bg-emerald-600/10 text-[10px] font-bold text-emerald-500 border border-emerald-600/20">
                     Prompt strictly in English
                   </span>
                 </div>

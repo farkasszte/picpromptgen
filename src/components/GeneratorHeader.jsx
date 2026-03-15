@@ -37,7 +37,7 @@ export default function GeneratorHeader({
               placeholder={getLabel("Oktatási téma vagy fogalom...", "Educational topic or concept...", "教育主题或概念...")}
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              className="w-full pl-12 pr-6 py-0 bg-zinc-900/50 border border-zinc-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all text-lg shadow-inner placeholder-zinc-700"
+              className="w-full pl-12 pr-6 py-0 bg-zinc-900/50 border border-zinc-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-600/30 transition-all text-lg shadow-inner placeholder-zinc-700"
               onKeyDown={(e) => e.key === 'Enter' && generateOutline()}
             />
           </div>
@@ -57,7 +57,7 @@ export default function GeneratorHeader({
               <button
                 onClick={() => setActiveTab('standard')}
                 disabled={!prompts.standard}
-                className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'standard' ? 'bg-zinc-800 text-blue-400 shadow-lg border border-zinc-700' : 'text-zinc-500 hover:text-zinc-300'} disabled:opacity-20`}
+                className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'standard' ? 'bg-zinc-800 text-emerald-500 shadow-lg border border-zinc-700' : 'text-zinc-500 hover:text-zinc-300'} disabled:opacity-20`}
               >
                 <Layout className="w-3.5 h-3.5" /> Standard
               </button>
