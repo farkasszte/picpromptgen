@@ -43,43 +43,6 @@ export default function GeneratorHeader({
             />
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2 shrink-0">
-            <button
-              onClick={generateOutline}
-              disabled={!topic || loading.outline}
-              className={`px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all ${!topic || loading.outline ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-white text-black hover:bg-zinc-200 active:scale-95 shadow-lg'}`}
-            >
-              {loading.outline ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Edit3 className="w-3 h-3" />}
-              1. {getLabel('Összefoglaló', 'Summary', '摘要')}
-            </button>
-
-            <button
-              onClick={generateStandardPrompt}
-              disabled={!outline || loading.outline}
-              className={`px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all ${!outline ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500 active:scale-95 shadow-lg'}`}
-            >
-              <Sparkles className="w-3 h-3" />
-              2. {getLabel('Prompt generálás', 'Generate Prompt', '生成提示词')}
-            </button>
-
-            <button
-              onClick={refineWithAI}
-              disabled={!prompts.standard || prompts.ai || loading.ai}
-              className={`px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all ${!prompts.standard || prompts.ai ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 active:scale-95 shadow-lg'}`}
-            >
-              {loading.ai ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Wand2 className="w-3 h-3" />}
-              3. {getLabel('AI Finomítás', 'AI Refine', 'AI 细化')}
-            </button>
-
-            <button
-              onClick={generateJsonSpec}
-              disabled={!prompts.standard || prompts.json || loading.json}
-              className={`px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all ${!prompts.standard || prompts.json ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 active:scale-95 shadow-lg'}`}
-            >
-              {loading.json ? <RefreshCw className="w-3 h-3 animate-spin" /> : <FileJson className="w-3 h-3" />}
-              4. {getLabel('JSON Spec', 'JSON Spec', 'JSON 规范')}
-            </button>
-          </div>
         </div>
 
         {/* Bottom Row: Tabs (Centered) */}

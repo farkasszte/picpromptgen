@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CATEGORIES, AGE_GROUPS, LANGUAGES } from './constants';
+import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES } from './constants';
 import Sidebar from './components/Sidebar';
 import GeneratorHeader from './components/GeneratorHeader';
 import PromptResult from './components/PromptResult';
@@ -7,13 +7,9 @@ import PromptResult from './components/PromptResult';
 export default function App() {
   const [apiKeyInput, setApiKeyInput] = useState(() => localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '');
 
-  // Persist API key to localStorage
-  useEffect(() => {
-    localStorage.setItem('gemini_api_key', apiKeyInput);
-  }, [apiKeyInput]);
-
   const [activeCat, setActiveCat] = useState('presentation');
   const [activeTemplate, setActiveTemplate] = useState(CATEGORIES.PRESENTATION.templates[0]);
+  const [selectedStyle, setSelectedStyle] = useState(INFOGRAPHIC_STYLES[0]);
   const [ageGroup, setAgeGroup] = useState('14-18');
   const [language, setLanguage] = useState('hu');
   const [topic, setTopic] = useState('');
@@ -34,6 +30,12 @@ export default function App() {
   const [copyStatus, setCopyStatus] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Persist API key to localStorage
+  useEffect(() => {
+    localStorage.setItem('gemini_api_key', apiKeyInput);
+  }, [apiKeyInput]);
+
+
   const formatText = (text) => text.replace(/-/g, '–');
 
   const sortedTemplates = [...CATEGORIES[activeCat.toUpperCase()].templates].sort((a, b) =>
@@ -46,7 +48,7 @@ export default function App() {
     return en;
   };
 
-  const getPromptSet = (t, topicStr, outlineStr, langId, ageId) => {
+  const getPromptSet = (t, topicStr, outlineStr, langId, ageId, stylePrompt = '') => {
     const currentLang = LANGUAGES.find(l => l.id === langId);
     const ageInfo = AGE_GROUPS.find(g => g.id === ageId).label;
     const isHu = langId === 'hu';
@@ -63,13 +65,14 @@ Technical Specification:
 – Visual Elements: ${t.elements}
 – Color Palette: ${t.palette}
 – Lighting: ${t.lighting}
+${stylePrompt ? `– Visual Theme: ${stylePrompt}` : ''}
 
 ${getLabel('Oktatási cél', 'Educational Goal', '教育目标')}: ${t.goal}
 ${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label} (${ageInfo})`);
 
     const infographic = formatText(`${getLabel('Képalkotási feladat: Rendszerszemléletű oktatási infografika', 'Image Generation Task: Systems-oriented Educational Infographic', '图像生成任务：系统导向的教育信息图')}
 
-Style: Educational Infographic Style + ${t.style}
+Style: Educational Infographic Style + ${t.style} ${stylePrompt ? `+ ${stylePrompt}` : ''}
 
 Content Blocks (Based on: ${topicStr}):
 1️⃣ ${getLabel('Alapfogalmak: Definíció és eredet', 'Basics: Definition and origin', '基础概念：定义与起源')}
@@ -105,8 +108,14 @@ ${getLabel(`Átfogó vizuális útmutató a(z) ${topicStr} témakörhöz (${ageI
       const isHu = language === 'hu';
       const isZh = language === 'zh';
       const systemInstruction = isHu
-        ? "Te egy professzionális oktatási szakértő vagy. Készíts egy tömör, 4 pontos szakmai vázlatot a megadott témáról. Csak a vázlatpontokat sorold fel."
-        : "You are a professional educational expert. Create a concise 4-point professional outline for the given topic. Only list the bullet points.";
+        ? `Te egy professzionális magyar oktatási szakértő és szövegszerkesztő vagy. Készíts egy részletes, 250-300 szavas szakmai vázlatot a megadott témáról. 
+SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
+1. KERÜLD AZ AI-KLISÉKET: Soha ne használd ezeket: 'Fontos megjegyezni', 'Érdemes kiemelni', 'Összefoglalva elmondható', 'Mérföldkő', 'Végezetül'.
+2. TERMÉSZETES SZÓREND: Alkalmazz fókusz-alapú szórendet (a legfontosabb szó vagy az új információ közvetlenül az ige előtt álljon).
+3. MONDATRITMUS: Váltogasd a mondatok hosszát. Legyenek rövid, ütős mondatok is.
+4. TÖMÖRSÉG: Kerüld a terpeszkedő kifejezéseket (pl. 'szerepet játszik' → 'hat', 'végrehajtásra kerül' → 'elvégzik'). Ne használj passzív szerkezeteket.
+5. TIPOGRÁFIA: Használj magyar „alsó-felső” idézőjeleket és rövid - gondolatjeleket.`
+        : "You are a professional educational expert. Create a detailed 250-300 word professional outline for the given topic.";
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKeyInput.trim()}`, {
         method: 'POST',
@@ -131,7 +140,8 @@ ${getLabel(`Átfogó vizuális útmutató a(z) ${topicStr} témakörhöz (${ageI
 
   const generateStandardPrompt = () => {
     if (!topic || !outline) return;
-    const standardPrompts = getPromptSet(activeTemplate, topic, outline, language, ageGroup);
+    const stylePrompt = selectedStyle.prompt;
+    const standardPrompts = getPromptSet(activeTemplate, topic, outline, language, ageGroup, stylePrompt);
     setPrompts({ standard: standardPrompts, ai: null, json: null });
     setActiveTab('standard');
   };
@@ -159,7 +169,7 @@ ${getLabel(`Átfogó vizuális útmutató a(z) ${topicStr} témakörhöz (${ageI
       const result = await response.json();
       const refinedData = JSON.parse(result.candidates[0].content.parts[0].text);
 
-      const aiPrompts = getPromptSet(refinedData, topic, outline, language, ageGroup);
+      const aiPrompts = getPromptSet(refinedData, topic, outline, language, ageGroup, selectedStyle.prompt);
       setPrompts(prev => ({ ...prev, ai: aiPrompts }));
       setActiveTab('ai');
     } catch (error) {
@@ -218,6 +228,16 @@ ${getLabel(`Átfogó vizuális útmutató a(z) ${topicStr} témakörhöz (${ageI
         apiKeyInput={apiKeyInput}
         setApiKeyInput={setApiKeyInput}
         getLabel={getLabel}
+        selectedStyle={selectedStyle}
+        setSelectedStyle={setSelectedStyle}
+        topic={topic}
+        generateOutline={generateOutline}
+        generateStandardPrompt={generateStandardPrompt}
+        refineWithAI={refineWithAI}
+        generateJsonSpec={generateJsonSpec}
+        loading={loading}
+        outline={outline}
+        prompts={prompts}
       />
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden bg-zinc-950">

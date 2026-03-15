@@ -42,26 +42,3 @@
 7. Click **2. Generate Prompt** to create the standard visual prompts based on the summary.
 8. (Optional) Click **3. AI Refine** for enhanced results or **4. JSON Spec** for data export.
 9. Use the **Tabs** to switch between results and the **COPY** button to copy prompts to your clipboard.
-
-## 💡 Suggestions for Future Development
-
-### 1. Model Selection
-- Add a dropdown in the settings to allow users to switch between different Gemini models (e.g., Flash for speed, Pro for higher quality).
-
-### 2. Batch Generation
-- Implement a feature to generate prompts for an entire lesson plan (multiple topics) at once.
-
-### 3. Integrated Image Preview
-- Integrate with image generation APIs (like DALL-E 3 or Midjourney API) to provide a "Generate Image" button directly within the app, showing a preview of the result.
-
-### 4. Template Editor
-- Allow users to create, save, and export their own custom prompt templates.
-
-### 5. Export to PDF/Markdown
-- Add an option to export the entire educational workflow (outline + prompts) into a formatted PDF or Markdown document for easier sharing.
-
-### 6. Voice Input
-- Add voice-to-text functionality for entering topics, making it more accessible for educators on the go.
-
-### 7. Historical Logs
-- Implement a local history feature where users can see and reuse their previously generated prompts.

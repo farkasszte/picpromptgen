@@ -29,16 +29,17 @@ export const CATEGORIES = {
     label: 'Infografika és Adat',
     icon: <BarChart3 className="w-4 h-4" />,
     templates: [
-      { id: 'i1', name: 'Anatómia vizualizáció', task: 'Készítsen képet egy "A(z) [TOPIC] anatómiája" típusú infografikáról, amely alkotórészeire bontja a fogalmat/tárgyat.', style: 'Exploded View Technical Illustration', composition: 'Central object with radial callouts', elements: 'Leader lines, detailed textures, component labels', palette: 'Naturalistic or technical colors', lighting: 'Ambient occlusion, detailed shadows', goal: 'Szerkezeti elemzés.' },
+      { id: 'i1', name: 'Anatómia vizualizáció', task: 'Készítsen képet egy "A(z) [TOPIC] anatómiája" típusú infografikáról, amely alkotórészeire bontja a fogalmat/tárgyat.', style: 'Exploded view technical illustration', composition: 'Central object with radial callouts', elements: 'Leader lines, detailed textures, component labels', palette: 'Naturalistic or technical colors', lighting: 'Ambient occlusion, detailed shadows', goal: 'Szerkezeti elemzés.' },
       { id: 'i2', name: 'Fejlődési idővonal', task: 'Készítsen képet egy "Fejlődési idővonalról" a(z) [TOPIC] témához, kiemelve az 5 legfontosabb fordulópontot.', style: 'Clean Linear Timeline', composition: 'Horizontal or zig-zag path', elements: 'Chronological markers, event icons, short descriptions', palette: 'Sequential color gradient', lighting: 'Even daylight', goal: 'Történeti kontextus megértése.' },
       { id: 'i3', name: 'Hatásfolyamat ábra', task: 'Készítsen képet egy "Hatásfolyamat" ábráról, amely bemutatja, hogyan befolyásolja a(z) [TOPIC] a rendszerszintű eredményeket.', style: 'Flowchart with depth', composition: 'Cause-to-effect directional flow', elements: 'Impact nodes, weighted arrows, feedback loops', palette: 'Professional corporate palette', lighting: 'Top-down diffused lighting', goal: 'Okozati összefüggések feltárása.' },
       { id: 'i4', name: 'Számok tükrében', task: 'Készítsen képet egy "A számok tükrében" típusú infografikáról, amely a(z) [TOPIC] statisztikai jelentőségére fókuszál.', style: 'Data-Driven Dashboard', composition: 'Collection of distinct metric cards', elements: 'Pie charts, bar graphs, large hero numbers', palette: 'Monochromatic with high-contrast text', lighting: 'Crisp digital display', goal: 'Kvantitatív összefüggések.' },
-      { id: 'i5', name: 'Érvek és Ellenérvek', task: 'Készítsen képet egy vizuális mérlegről az érvek és ellenérvek bemutatására a(z) [TOPIC] kapcsán.', style: 'Balanced Comparison Sheet', composition: 'Symmetrical split layout', elements: 'Weights, scale icons, contrasting bullet points', palette: 'Cool blue vs warm amber', lighting: 'Neutral studio light', goal: 'Objektív elemzés.' },
+      { id: 'i5', name: 'Érvek és ellenérvek', task: 'Készítsen képet egy vizuális mérlegről az érvek és ellenérvek bemutatására a(z) [TOPIC] kapcsán.', style: 'Balanced Comparison Sheet', composition: 'Symmetrical split layout', elements: 'Weights, scale icons, contrasting bullet points', palette: 'Cool blue vs warm amber', lighting: 'Neutral studio light', goal: 'Objektív elemzés.' },
       { id: 'i6', name: 'Fontossági hierarchia', task: 'Készítsen képet egy fontossági hierarchia listáról a(z) [TOPIC] számára egy piramis struktúra használatával.', style: 'Hierarchical Pyramid Structure', composition: 'Triangular layered sections', elements: 'Foundational blocks, peak achievement, layer labels', palette: 'Gradated saturation from bottom up', lighting: 'Uplighting effect', goal: 'Strukturális prioritások.' },
-      { id: 'i7', name: 'Globális vs. Lokális', task: 'Készítsen képet egy összehasonlító elrendezésről, amely bemutatja a(z) [TOPIC] hatásait globális és lokális léptékben.', style: 'Multi-scale Spatial Comparison', composition: 'Macro-view globe beside Micro-view map', elements: 'Scale markers, localized icons, global trends', palette: 'Earth tones', lighting: 'Dual-source illumination', goal: 'Léptékváltó gondolkodás.' },
+      { id: 'i7', name: 'Globális vs. lokális', task: 'Készítsen képet egy összehasonlító elrendezésről, amely bemutatja a(z) [TOPIC] hatásait globális és lokális léptékben.', style: 'Multi-scale Spatial Comparison', composition: 'Macro-view globe beside Micro-view map', elements: 'Scale markers, localized icons, global trends', palette: 'Earth tones', lighting: 'Dual-source illumination', goal: 'Léptékváltó gondolkodás.' },
       { id: 'i8', name: 'Siker–ellenőrzőlista', task: 'Készítsen képet egy "Út a sikerhez" infografika ellenőrzőlistáról a(z) [TOPIC] elsajátításához.', style: 'Gamified Checklist Graphic', composition: 'Winding path with checkboxes', elements: 'Milestone flags, progress bar, success trophy', palette: 'Vibrant achievement colors', lighting: 'Bright optimistic lighting', goal: 'Tanulási útmutatás.' },
       { id: 'i9', name: 'Folyamatciklusa', task: 'Készítsen képet egy folyamatciklus leírásról, biztosítva, hogy a(z) [TOPIC] utolsó és első fázisa közötti hurok világosan látható legyen.', style: 'Circular Iterative Model', composition: 'Closed loop ring', elements: 'Recycling arrows, continuous flow nodes', palette: 'Harmonious circular palette', lighting: 'Even internal glow', goal: 'Ciklikus folyamatok megértése.' },
-      { id: 'i10', name: 'Puska–módszer (Cheat Sheet)', task: 'Készítsen képet egy Cheat Sheet elrendezésről, amely komplex információkat sűrít egyetlen vizuális útmutatóba a(z) [TOPIC] kapcsán.', style: 'Condensed Information Density', composition: 'Multimodal grid (text, icon, chart)', elements: 'Quick-reference boxes, mnemonic icons', palette: 'High-readability contrast', lighting: 'Office/Desk lighting clarity', goal: 'Hatékony összegzés.' }
+      { id: 'i10', name: 'Puska–módszer (Cheat Sheet)', task: 'Készítsen képet egy Cheat Sheet elrendezésről, amely komplex információkat sűrít egyetlen vizuális útmutatóba a(z) [TOPIC] kapcsán.', style: 'Condensed Information Density', composition: 'Multimodal grid (text, icon, chart)', elements: 'Quick-reference boxes, mnemonic icons', palette: 'High-readability contrast', lighting: 'Office/Desk lighting clarity', goal: 'Hatékony összegzés.' },
+      { id: 'i11', name: 'Karrier Út (Resume Journey)', task: 'Készítsen egy infografikát, amely bemutatja a karrierem útját és főbb mérföldköveit a(z) [TOPIC] kontextusában, Oregon Trail stílusban.', style: '8-bit Retro Oregon Trail', composition: 'Side-scrolling adventure path with pixelated stations', elements: 'Pixel art covered wagons, 8-bit characters, rustic signage, status bars', palette: 'Limited 8-bit palette (browns, greens, blacks)', lighting: 'Flat retro CRT display', goal: 'Karrierút vizualizálása nosztalgikus stílusban.' }
     ]
   },
   SPATIAL: {
@@ -50,10 +51,10 @@ export const CATEGORIES = {
       { id: 's2', name: 'Venn-diagram', task: 'Készítsen képet egy Venn-diagram leírásáról, azonosítva a(z) [TOPIC] egyedi és közös vonásait más releváns fogalmakkal.', style: 'Minimalist Overlap Diagram', composition: 'Intersecting circles with clear central labels', elements: 'Shaded intersection, distinct node icons', palette: 'Translucent primary colors', lighting: 'Flat graphic lighting', goal: 'Hasonlóságok és különbségek elemzése.' },
       { id: 's3', name: 'Hálózati diagram', task: 'Készítsen képet egy hálózati diagramról, amely bemutatja az 5 legfontosabb érintett közötti kapcsolatot a(z) [TOPIC] területén.', style: 'Social Network Graph', composition: 'Node-and-link constellation', elements: 'Stakeholder avatars, relational arrows, weight indicators', palette: 'Divergent categorical colors', lighting: 'Subtle neon glow for nodes', goal: 'Társadalmi/rendszeri dinamika.' },
       { id: 's4', name: 'Térbeli eloszlás', task: 'Készítsen képet egy térbeli eloszlás összefoglalóról: magyarázza el, hol a legjellemzőbb a(z) [TOPIC] és miért.', style: 'Heatmap Distribution View', composition: 'Geographic map with intensity gradients', elements: 'Density markers, regional labels, trend lines', palette: 'Color intensity scale (blue to red)', lighting: 'Geographic overlay lighting', goal: 'Térbeli mintázatok felismerése.' },
-      { id: 's5', name: 'Mozgás és Áramlás', task: 'Készítsen képet egy "Mozgás és Áramlás" leírásról, amely bemutatja az információk áramlását a(z) [TOPIC] rendszerén binnen.', style: 'Kinetic Flow Diagram', composition: 'Dynamic directional streams', elements: 'Flow velocity arrows, bottleneck icons, source/sink nodes', palette: 'Fluid gradients', lighting: 'Motion blur effect', goal: 'Dinamikai elemzés.' },
+      { id: 's5', name: 'Mozgás és áramlás', task: 'Készítsen képet egy "Mozgás és Áramlás" leírásról, amely bemutatja az információk áramlását a(z) [TOPIC] rendszerén binnen.', style: 'Kinetic Flow Diagram', composition: 'Dynamic directional streams', elements: 'Flow velocity arrows, bottleneck icons, source/sink nodes', palette: 'Fluid gradients', lighting: 'Motion blur effect', goal: 'Dinamikai elemzés.' },
       { id: 's6', name: 'Zónázott elemzés', task: 'Készítsen képet egy belső és külső tényezőkre osztott zónázott elemzésről a(z) [TOPIC] számára.', style: 'Concentric Zonal Layout', composition: 'Inside-out partitioned circles', elements: 'Internal core factors, external environmental influences', palette: 'Warm interior, cool exterior', lighting: 'Focal center light', goal: 'Környezeti analízis.' },
       { id: 's7', name: 'Koncentrikus körök', task: 'Készítsen képet egy koncentrikus körmodellről: helyezze a(z) [TOPIC] magját a középpontba, a kapcsolódó rétegeket pedig kívülre.', style: 'Onion-Skin Model', composition: 'Multiple nested rings', elements: 'Core essence, secondary attributes, tertiary links', palette: 'Monochromatic saturation layers', lighting: 'Layered transparency shadows', goal: 'Mélységi struktúra.' },
-      { id: 's8', name: 'Előtte és Utána', task: 'Készítsen képet egy vizuális összehasonlításról, amely bemutatja a(z) [TOPIC] hatását egy esemény előtt és után.', style: 'Temporal Split Comparison', composition: 'Vertical or horizontal side-by-side', elements: 'Transformation markers, growth indicators', palette: 'Desaturated "Before", vibrant "After"', lighting: 'Time-of-day progression', goal: 'Változáskövetés.' },
+      { id: 's8', name: 'Előtte és utána', task: 'Készítsen képet egy vizuális összehasonlításról, amely bemutatja a(z) [TOPIC] hatását egy esemény előtt és után.', style: 'Temporal Split Comparison', composition: 'Vertical or horizontal side-by-side', elements: 'Transformation markers, growth indicators', palette: 'Desaturated "Before", vibrant "After"', lighting: 'Time-of-day progression', goal: 'Változáskövetés.' },
       { id: 's9', name: 'Ránagyítás (Drill–Down)', task: 'Készítsen képet egy "Drill–Down" struktúráról: induljon a(z) [TOPIC] széles áttekintésétől, majd "zoomoljon" egy konkrét esettanulmányra.', style: 'Telescopic View Illustration', composition: 'Series of increasingly detailed panels', elements: 'Overview map, focused lens, microscopic details', palette: 'Contextual blues and greys', lighting: 'Focus-pull effect', goal: 'Általánostól az egyediig.' },
       { id: 's10', name: 'Szórásdiagram logika', task: 'Készítsen képet egy szórásdiagram logikai vázlatáról: írja le, mely változók korrelálnak a(z) [TOPIC] kapcsán.', style: 'Analytical Scatter Plot', composition: 'Coordinate axis with clustered data points', elements: 'X/Y axis labels, outlier callouts, trend line', palette: 'Scientific muted tones', lighting: 'Even digital grid light', goal: 'Statisztikai mintázatkeresés.' }
     ]
@@ -69,7 +70,7 @@ export const CATEGORIES = {
       { id: 'd4', name: 'Halszálka (Ishikawa)', task: 'Készítsen képet egy Halszálka diagram vázlatáról a(z) [TOPIC] gyökérokainak azonosítására.', style: 'Root Cause Analysis Framework', composition: 'Skeleton-style horizontal flow', elements: 'Problem head, category ribs (People, Process, etc.)', palette: 'Technical grey and steel', lighting: 'Precision studio lighting', goal: 'Problémamegoldó elemzés.' },
       { id: 'd5', name: 'Döntési fa', task: 'Készítsen képet egy döntési fáról a(z) [TOPIC] számára, hogy segítsd a tanulóknak navigálni egy választási helyzetben.', style: 'Algorithmic Flow Layout', composition: 'Branching tree structure', elements: 'Decision nodes, branch paths, outcomes', palette: 'Binary contrast colors', lighting: 'Pathway illumination', goal: 'Logikai döntéshozatal.' },
       { id: 'd6', name: 'Visszacsatolási hurok', task: 'Készítsen képet egy visszacsatolási hurok diagramról a(z) [TOPIC] témában: mutassa be a folyamatok egymásra hatását.', style: 'Self-Regulating System Model', composition: 'Interconnected cyclic nodes', elements: 'Positive/negative signs, reinforcement arrows', palette: 'System dynamics palette', lighting: 'Dynamic energy glow', goal: 'Rendszerdinamika megértése.' },
-      { id: 'd7', name: 'Gondolattérkép (Mind Map)', task: 'Készítsen képet egy gondolattérkép vázáról a(z) [TOPIC] központi témájával és 4 fő ággal.', style: 'Organic Mind Map Style', composition: 'Radial branching structure', elements: 'Central trunk, sub-topic branches, keyword icons', palette: 'Multi-colored semantic branches', lighting: 'Soft ambient clarity', goal: 'Asszociatív rögzítés.' },
+      { id: 'd7', name: 'Gondolattérkép (Mind map)', task: 'Készítsen képet egy gondolattérkép vázáról a(z) [TOPIC] központi témájával és 4 fő ággal.', style: 'Organic Mind Map Style', composition: 'Radial branching structure', elements: 'Central trunk, sub-topic branches, keyword icons', palette: 'Multi-colored semantic branches', lighting: 'Soft ambient clarity', goal: 'Asszociatív rögzítés.' },
       { id: 'd8', name: 'Spektrum / Kontinuum', task: 'Készítsen képet egy spektrum vagy kontinuum vizualizációról a(z) [TOPIC] számára, szélsőséges nézőpontokkal.', style: 'Linear Scale Visualization', composition: 'Horizontal line with pointer nodes', elements: 'Extreme labels, midpoint balance, variation markers', palette: 'Gradient from cold to warm', lighting: 'Balanced even spread', goal: 'Árnyalt szemléletmód.' },
       { id: 'd9', name: 'Híd–modell (Fejlődés)', task: 'Készítsen képet egy "Híd–modellről": mutassa be az elmozdulást az "A" állapotból a "B" állapotba a(z) [TOPIC] kapcsán.', style: 'Developmental Transition Bridge', composition: 'Two cliffs connected by a modular bridge', elements: 'Start state, end state, required tools/steps', palette: 'Growth greens and browns', lighting: 'Future-focused morning sun', goal: 'Fejlődési folyamat tervezése.' },
       { id: 'd10', name: 'Mérleg vizualizáció', task: 'Készítsen képet egy mérleg vizualizációról: mely tényezők emelik fel vagy húzzák le a(z) [TOPIC] helyzetét.', style: 'Equilibrium Metaphor', composition: 'Classical balance scale', elements: 'Weight blocks, lifting balloons, central fulcrum', palette: 'Heavy greys vs light yellows', lighting: 'Gravity-focused lighting', goal: 'Tényező–elemzés.' }
@@ -89,19 +90,154 @@ export const CATEGORIES = {
       { id: 'c7', name: 'Értékelési rubrika', task: 'Készítsen képet egy strukturált értékelési rubrikáról a(z) [TOPIC] témakörű projektek osztályozásához.', style: 'Structured Grading Table', composition: 'Checklist matrix with criteria nodes', elements: 'Performance levels, specific criteria, visual symbols', palette: 'Neutral with status colors', lighting: 'Flat office clarity', goal: 'Objektív értékelés.' },
       { id: 'c8', name: 'Mítosz–vadász poszter', task: 'Készítsen képet egy "Mítosz–vadász" poszterről: hibák és igazságok bemutatása a(z) [TOPIC] kapcsán.', style: 'Propaganda/Alert Poster Style', composition: 'Striking duo-tone split', elements: 'Large "X" and "Check" symbols, bold fonts', palette: 'Stark Red and Green', lighting: 'Harsh high-contrast lighting', goal: 'Tévhit–mentesítés.' },
       { id: 'c9', name: 'Sketch–note útmutató', task: 'Készítsen képet egy "Sketch–note" utasításkészletről a(z) [TOPIC] lényegének lerajzolásához.', style: 'Hand-Drawn Instructional Style', composition: 'Doodle-style step guide', elements: 'Simplified sketches, arrow connectors, bubble text', palette: 'Marker and paper aesthetic', lighting: 'Soft desk lamp glow', goal: 'Vizuális jegyzetelés.' },
-      { id: 'c10', name: 'Mester Összefoglaló Táblázat', task: 'Készítsen képet egy Mester Összefoglaló Táblázatról a(z) [TOPIC] rendszerezéséhez.', style: 'Executive Knowledge Matrix', composition: 'High-level structured spreadsheet', elements: 'Summary icons, evidence links, action steps', palette: 'Deep professional corporate tones', lighting: 'High-key studio clarity', goal: 'Komplex szintézis.' }
+      { id: 'c10', name: 'Mester összefoglaló táblázat', task: 'Készítsen képet egy Mester Összefoglaló Táblázatról a(z) [TOPIC] rendszerezéséhez.', style: 'Executive Knowledge Matrix', composition: 'High-level structured spreadsheet', elements: 'Summary icons, evidence links, action steps', palette: 'Deep professional corporate tones', lighting: 'High-key studio clarity', goal: 'Komplex szintézis.' }
     ]
   }
 };
 
 export const AGE_GROUPS = [
-  { id: '10-14', label: '10–14 év (Alapfok)' },
-  { id: '14-18', label: '14–18 év (Középfok)' },
-  { id: '18+', label: '18+ év (Felsőfok)' }
+  { id: '10-14', label: '10–14 év (alapfok)' },
+  { id: '14-18', label: '14–18 év (középfok)' },
+  { id: '18+', label: '18+ év (felsőfok)' }
 ];
 
 export const LANGUAGES = [
   { id: 'hu', label: 'Magyar', flag: 'HU' },
   { id: 'en', label: 'Angol', flag: 'EN' },
   { id: 'zh', label: 'Mandarin', flag: 'CN' }
+];
+
+export const INFOGRAPHIC_STYLES = [
+  { 
+    id: 'default', 
+    name: { hu: 'Alapértelmezett', en: 'Default', zh: '默认' }, 
+    description: { hu: 'Nincs extra stílus alkalmazva.', en: 'No extra style applied.', zh: '未应用额外样式。' },
+    prompt: '' 
+  },
+  { 
+    id: 'brutalist', 
+    name: { hu: 'Brutalista', en: 'Brutalist', zh: '野兽派' }, 
+    description: { hu: 'Ultra-modern szerkesztő plakát stílus, brutalista grafikai design, magas kontrasztú skicc illusztrációk.', en: 'Ultra-modern editorial poster style, brutalist graphic design, high-contrast sketch illustrations.', zh: '超现代编辑海报风格，野兽派图形设计，高对比度素描插图。' },
+    prompt: 'Ultra-modern editorial poster style, brutalist graphic design, high-contrast neo-noir black and white sketch illustrations, bold red accent blocks, Swiss typography meets experimental grunge layouts, layered collage compositions, fragmented geometric shapes, overlapping text blocks and truncated titles, worn ink textures, grainy xerox noise, asymmetric grid systems, abstract architectural lines, stencil typography, journal-cover aesthetic, contemporary avant-garde design, sharp lighting with deep shadows, high detail, dramatic contrast, minimal color palette (black, white, red), chaotic yet structured compositions, urban underground feel, premium poster print.' 
+  },
+  { 
+    id: 'neo-noir', 
+    name: { hu: 'Sötét neo-noir', en: 'Dark Neo-Noir', zh: '黑暗新黑色' }, 
+    description: { hu: 'Sötét neo-noir expresszionista festmény, brutális filmszerű atmoszféra, drámai megvilágítás.', en: 'Dark neo-noir expressionist painting, brutal cinematic atmosphere, dramatic lighting.', zh: '黑暗新黑色表现主义绘画，残酷的电影氛围，戏剧性的灯光。' },
+    prompt: 'Dark neo-noir expressionist painting, brutal cinematic atmosphere, bold red and deep black dominant palette with muted grey undertones, dramatic high-contrast lighting, sharp chiaroscuro shadows, aggressive painterly brushstrokes, oil paint effect, abstract splash and smear overlays, rough palette knife strokes, urban crime poster aesthetic, somber and intense tone, subtle grunge texture, layered paint depth, strong focal contrast, modern graphic novel realism, slightly desaturated skin tones against vivid red highlights, raw and powerful composition, high detail, dramatic editorial style.' 
+  },
+  { 
+    id: 'manga', 
+    name: { hu: 'Manga Képregény', en: 'Manga Comic', zh: '漫画风格' }, 
+    description: { hu: 'Klasszikus japán képregény-esztétika, fekete-fehér tintarajz, panel elrendezés.', en: 'Classic Japanese comic aesthetic, black and white ink drawing, panel layout.', zh: '经典日本漫画审美，黑白墨水画，面板布局。' },
+    prompt: 'Manga comic style educational infographic, classic Japanese comic aesthetic. Black and white ink drawing style, thick outlines, subtle grayscale screen tone shading. Panel layout (koma-wari): asymmetric, dynamic panels. Thick black panel borders, white gutters (panel dividers). Ambiance: epic, dramatic, engaging.' 
+  },
+  { 
+    id: 'cyberpunk', 
+    name: { hu: 'Cyberpunk / Tech', en: 'Cyberpunk / Tech', zh: '赛博朋克 / 科技' }, 
+    description: { hu: 'Futurisztikus sötét téma neon fényekkel, ragyogó effektekkel.', en: 'Futuristic dark theme with neon lights and glowing effects.', zh: '带有霓虹灯和发光效果的未来主义黑暗主题。' },
+    prompt: 'Tech trend infographic, cyberpunk-inspired dark theme. Dark background with neon turquoise and magenta highlights. A strong statistic or prediction displayed prominently. Glowing effects on key elements, futuristic sans-serif font. Designed for instant understanding, optimized for social media.' 
+  },
+  { 
+    id: 'architecture', 
+    name: { hu: 'Architektúra / Adat', en: 'Architecture / Data', zh: '建筑 / 数据' }, 
+    description: { hu: 'Izometrikus diagram, tervrajz-stílus, kék-szürke duotón.', en: 'Isometric diagram, blueprint style, blue-grey duotone.', zh: '轴测图，蓝图风格，蓝灰双色调。' },
+    prompt: 'Isometric diagram, blueprint-style, blue-gray duotone. Components represented as nodes, arrows indicating the direction of data flow. Minimal text, icons only.' 
+  },
+  { 
+    id: 'comparison', 
+    name: { hu: 'Összehasonlítás', en: 'Comparison', zh: '比较' }, 
+    description: { hu: 'Osztott képernyős elrendezés, kontrasztos színekkel a különbségek szemléltetésére.', en: 'Split-screen layout with contrasting colors to illustrate differences.', zh: '分屏布局，使用对比色来说明差异。' },
+    prompt: 'Split-screen comparison layout, high-contrast duotone palette. Left side: cool blue tones. Right side: warm orange tones. Clean grid alignment, sans-serif font, minimal ornamentation. Icons to represent individual features, checkmarks for capabilities.' 
+  },
+  { 
+    id: 'executive', 
+    name: { hu: 'Minimalista', en: 'Minimalist', zh: '极简主义' }, 
+    description: { hu: 'Svájci minimalizmus, professzionális vezetői esztétika, letisztult rácsrendszer.', en: 'Swiss minimalism, professional executive aesthetic, clean grid system.', zh: '瑞士极简主义，专业的高管审美，干净的网格系统。' },
+    prompt: 'Swiss minimalism style infographic, strict grid alignment, high-contrast layout. Navy blue base with gold accents for key metrics, off-white background. Prominently displayed main statistic with supporting data points. Clean sans-serif font, professional executive aesthetic.' 
+  },
+  { 
+    id: 'cubist', 
+    name: { hu: 'Expresszív kubista', en: 'Expressive Cubist', zh: '表现主义立体派' }, 
+    description: { hu: 'Geometriai fragmentáció, kubista ihletésű absztrakt kompozíció.', en: 'Geometric fragmentation, cubist-inspired abstract composition.', zh: '几何碎片化，受立体主义启发的抽象构图。' },
+    prompt: 'Expressive abstract style, bold geometric fragmentation, cubist-inspired composition, dynamic angular planes overlapping, vibrant saturated color palette (magenta, cyan, violet, coral, turquoise), watercolor and acrylic mixed media effect, visible canvas texture, painterly distortion, gallery-quality modern art finish.' 
+  },
+  { 
+    id: 'mosaic', 
+    name: { hu: 'Geometriai mozaik', en: 'Geometric Mosaic', zh: '几何马赛克' }, 
+    description: { hu: 'Töredezett sokszögű formák, ólomüveg hatás, élénk színek.', en: 'Fragmented polygonal shapes, stained glass effect, vibrant colors.', zh: '碎片化的多边形形状，彩色玻璃效果，鲜艳的色彩。' },
+    prompt: 'Modern geometric mosaic style with cubist influence, fragmented polygonal shapes arranged in a stained glass composition. Strong emphasis on sharp edges, angular facets, and layered geometry. Rich, saturated color palette dominated by deep blue, warm orange, amber. Painterly acrylic or oil paint effect.' 
+  },
+  { 
+    id: 'collage', 
+    name: { hu: 'Hibrid kollázs', en: 'Hybrid Collage', zh: '混合拼贴' }, 
+    description: { hu: 'Hibrid konceptuális kollázs, papír textúra, technikai vonalak.', en: 'Hybrid conceptual collage, paper texture, technical lines.', zh: '混合概念拼贴，纸张纹理，技术线条。' },
+    prompt: 'Hybrid conceptual collage illustration, double exposure composition, editorial poster aesthetic, fusion of realistic grayscale portrait rendering and urban architectural montage, geometric grid overlays and technical blueprint lines, layered cut-and-paste paper texture, bold orange and charcoal black highlights.' 
+  },
+  { 
+    id: 'expressionist', 
+    name: { hu: 'Vegyes média', en: 'Mixed Media', zh: '混合媒体' }, 
+    description: { hu: 'Dinamikus expresszionista festmény, érzelmes ecsetvonásokkal.', en: 'Dynamic expressionist painting with emotional brushstrokes.', zh: '充满情感笔触的动态表现主义绘画。' },
+    prompt: 'Dynamic mixed media expressionist painting with strong emotions. Chaotic mix of bold brushstrokes, paint splatters, and collage elements. Color palette rich in warm oranges, deep yellows, and earthy browns, with electric turquoise highlights.' 
+  },
+  { 
+    id: 'timeline', 
+    name: { hu: 'Folyamat / Idővonal', en: 'Process / Timeline', zh: '过程 / 时间表' }, 
+    description: { hu: 'Izometrikus utazásillusztráció, kanyargó ösvénnyel és mérföldkövekkel.', en: 'Isometric journey illustration with a winding path and milestones.', zh: '带有蜿蜒路径 és mérföldkövekkel rendelkező izometrikus utazásillusztráció.' },
+    prompt: 'Isometric journey illustration, top-down view with a winding path. Soft blue and turquoise palette with warm accent-colored milestone markers. Every step is an independent station on the path, with numbered icons. Visual storytelling through icons and spatial arrangement.' 
+  },
+  { 
+    id: 'vulgarisation', 
+    name: { hu: 'Ismeretterjesztés', en: 'Educational Explainer', zh: '知识普及' }, 
+    description: { hu: 'Flat design illusztráció, Kurzgesagt-stílus, barátságos ikonok.', en: 'Flat design illustration, Kurzgesagt-style, friendly icons.', zh: '扁平化设计插图，Kurzgesagt 风格，友好的图标。' },
+    prompt: 'Flat design illustration, Kurzgesagt-style, soft pastel colors with warm highlights. Simplified rounded shapes, friendly icons, clean visual flow. Top-down structure: concept → mechanism → outcome.' 
+  },
+  { 
+    id: 'mini-world', 
+    name: { hu: 'Mini világ (izometrikus)', en: 'Mini World (Isometric)', zh: '微缩世界（轴测）' }, 
+    description: { hu: 'Miniatűr világ, geometrikus formák, játékos környezet.', en: 'Miniature world look, geometric shapes, toy-like environment.', zh: '缩微世界外观，几何形状，玩具般的环境。' },
+    prompt: 'Miniature World Look with Geometric shapes, "blocky" characters, and a clear sense of depth without using true 3D perspective. Isometric projection, simplified toy-like environment, tilt-shift photography effect, clean geometric primitives.' 
+  },
+  { 
+    id: 'chalkboard', 
+    name: { hu: 'Kréta és tábla', en: 'Chalkboard', zh: '粉笔板' }, 
+    description: { hu: 'Klasszikus iskolai tábla stílus, kréta textúrával.', en: 'Classic chalkboard style with chalk texture.', zh: '带有粉笔纹理的经典粉笔板风格。' },
+    prompt: 'Classic chalkboard style, white and colored chalk texture on a dark slate background. Hand-drawn diagrams, dusty textures, smudged erasures, educational classroom aesthetic.' 
+  },
+  { 
+    id: 'anime-battle', 
+    name: { hu: 'Anime csata', en: 'Anime Battle', zh: '动漫战斗' }, 
+    description: { hu: 'Dinamikus anime akció, energikus effektekkel.', en: 'Dynamic anime action with energetic effects.', zh: '带有活力效果的动态动漫动作。' },
+    prompt: 'High-octane Anime Battle Style. Dynamic action lines, intense energy effects (shōnen style), dramatic freeze-frames, vibrant saturated colors, expressive character poses, cinematic combat framing.' 
+  },
+  { 
+    id: 'tactile-3d', 
+    name: { hu: 'Taktilis 3D (Neumorphism)', en: 'Tactile 3D (Neumorphism)', zh: '触觉 3D（新拟物化）' }, 
+    description: { hu: 'Taktilis 3D stílus lágy árnyékokkal, fényes felületekkel.', en: 'Tactile 3D style with soft shadows, glossy finishes.', zh: '带有软阴影 és fényes felületekkel rendelkező taktilis 3D stílus.' },
+    prompt: 'Tactile 3D style with Neumorphism: soft shadows that make shapes look extruded from the background, glossy finishes, and inflated 3D shapes. High-end UI aesthetic, plastic/clay textures, soft diffused lighting, rounded corners.' 
+  },
+  { 
+    id: '90s-retro', 
+    name: { hu: '90-es évek / Y2K', en: '90s / Y2K Retro', zh: '90 年代 / Y2K 复古' }, 
+    description: { hu: '90-es évek/Y2K stílus pixel art ikonokkal, neon színekkel.', en: '90s/Y2K style with pixel art icons and neon colors.', zh: '带有像素艺术 ikonokkal és neon színekkel rendelkező 90-es évek/Y2K stílus.' },
+    prompt: '90s/Y2K Retro style with pixel art icons, bright neon or "bubblegum" colors (hot pink, lime green, electric blue). Chunky, rounded typography, vaporwave elements, lo-fi digital textures, sticker-bomb aesthetic.' 
+  },
+  { 
+    id: 'whiteboard', 
+    name: { hu: 'Whiteboard rajz', en: 'Whiteboard Drawing', zh: '白板画' }, 
+    description: { hu: 'Professzionális whiteboard rajz filctollal.', en: 'Professional whiteboard drawing with markers.', zh: '使用马克笔的专业白板画。' },
+    prompt: 'Professional whiteboard style using felt-tip markers (black, blue, red). Hand-drawn look, slight whiteboard reflections, clean academic or business brainstorming aesthetic, simple line art.' 
+  },
+  { 
+    id: 'kawaii', 
+    name: { hu: 'Kawaii doodle', en: 'Kawaii Doodle', zh: '可爱涂鸦' }, 
+    description: { hu: 'Szupercuki Kawaii doodle stílus, pasztell színekkel.', en: 'Super-cute Kawaii doodle style with pastel colors.', zh: '带有柔和色彩的超级可爱涂鸦风格。' },
+    prompt: 'Kawaii Doodle Art style. Super-cute characters with simple faces, soft pastel palette, thick friendly outlines, cluttered but organized compositions, joyful and "sparkly" elements.' 
+  },
+  { 
+    id: 'oregon-trail', 
+    name: { hu: 'Retro 8-bit', en: 'Retro 8-bit', zh: '复古 8 位' }, 
+    description: { hu: 'Klasszikus 8-bites retro stílus, pixel art esztétika.', en: 'Classic 8-bit retro style, pixel art aesthetic.', zh: '经典 8 位复古风格，像素艺术审美。' },
+    prompt: 'Classic 8-bit Oregon Trail retro style. Pixelated pixel art, limited color palette, jagged edges, 1980s computer game aesthetic, rustic western themes, blocky status text.' 
+  }
 ];

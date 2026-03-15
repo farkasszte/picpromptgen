@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Cpu,
   Settings,
@@ -6,9 +7,15 @@ import {
   GraduationCap,
   Target,
   FileText,
-  ChevronRight
+  ChevronRight,
+  Palette,
+  RefreshCw,
+  Edit3,
+  Sparkles,
+  Wand2,
+  FileJson
 } from 'lucide-react';
-import { CATEGORIES, AGE_GROUPS, LANGUAGES } from '../constants.jsx';
+import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES } from '../constants.jsx';
 
 export default function Sidebar({
   language,
@@ -22,10 +29,28 @@ export default function Sidebar({
   sortedTemplates,
   apiKeyInput,
   setApiKeyInput,
-  getLabel
+  getLabel,
+  selectedStyle,
+  setSelectedStyle,
+  topic,
+  generateOutline,
+  generateStandardPrompt,
+  refineWithAI,
+  generateJsonSpec,
+  loading,
+  outline,
+  prompts
 }) {
+  const [hoveredTemplate, setHoveredTemplate] = useState(null);
+  const [hoveredStyle, setHoveredStyle] = useState(null);
+  const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const [ageDropdownOpen, setAgeDropdownOpen] = useState(false);
+  const [catDropdownOpen, setCatDropdownOpen] = useState(false);
+  const [tmplDropdownOpen, setTmplDropdownOpen] = useState(false);
+
   return (
-    <aside className="w-full md:w-80 bg-zinc-900 border-r border-zinc-800 flex flex-col shrink-0">
+    <aside className="w-full md:w-80 bg-zinc-900 border-r border-zinc-800 flex flex-col shrink-0 relative">
       <div className="p-6 border-b border-zinc-800 flex flex-col gap-2">
         <div className="flex items-center gap-2 text-blue-500">
           <Cpu className="w-5 h-5" />
@@ -33,21 +58,66 @@ export default function Sidebar({
         </div>
       </div>
 
+      <div className="p-4 border-b border-zinc-800 space-y-2">
+        <button
+          onClick={generateOutline}
+          disabled={!topic || loading.outline}
+          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!topic || loading.outline ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-white text-black hover:bg-zinc-200 active:scale-95 shadow-lg'}`}
+        >
+          <div className="flex items-center gap-2">
+            {loading.outline ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Edit3 className="w-3 h-3" />}
+            <span>1. {getLabel('Összefoglaló', 'Summary', '摘要')}</span>
+          </div>
+        </button>
+
+        <button
+          onClick={generateStandardPrompt}
+          disabled={!outline || loading.outline}
+          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!outline ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500 active:scale-95 shadow-lg'}`}
+        >
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-3 h-3" />
+            <span>2. {getLabel('Prompt', 'Prompt', '提示词')}</span>
+          </div>
+        </button>
+
+        <button
+          onClick={refineWithAI}
+          disabled={!prompts.standard || prompts.ai || loading.ai}
+          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!prompts.standard || prompts.ai ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 active:scale-95 shadow-lg'}`}
+        >
+          <div className="flex items-center gap-2">
+            {loading.ai ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Wand2 className="w-3 h-3" />}
+            <span>3. {getLabel('AI Finomítás', 'AI Refine', 'AI 细化')}</span>
+          </div>
+        </button>
+
+        <button
+          onClick={generateJsonSpec}
+          disabled={!prompts.standard || prompts.json || loading.json}
+          className={`w-full px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center justify-between transition-all ${!prompts.standard || prompts.json ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 active:scale-95 shadow-lg'}`}
+        >
+          <div className="flex items-center gap-2">
+            {loading.json ? <RefreshCw className="w-3 h-3 animate-spin" /> : <FileJson className="w-3 h-3" />}
+            <span>4. JSON Spec</span>
+          </div>
+        </button>
+      </div>
+
       {/* API Key Settings */}
       <div className="p-4 border-b border-zinc-800 bg-zinc-900/50">
-        <div className="flex items-center gap-2 mb-3 px-2">
-          <Settings className="w-3 h-3 text-zinc-500" />
-          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Beállítások</span>
-        </div>
-        <div className="px-2">
-          <div className="relative group">
-            <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-600 group-focus-within:text-blue-500 transition-colors" />
+        <div className="flex items-center gap-4 px-2">
+          <div className="flex items-center gap-2 shrink-0">
+            <Key className="w-3 h-3 text-zinc-500" />
+            <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">API</span>
+          </div>
+          <div className="relative group flex-1">
             <input
               type="password"
-              placeholder="Gemini API kulcs..."
+              placeholder="API kulcs..."
               value={apiKeyInput}
               onChange={(e) => setApiKeyInput(e.target.value)}
-              className="w-full bg-zinc-950/50 border border-zinc-800 text-xs rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-blue-500/50 focus:bg-zinc-950 transition-all placeholder:text-zinc-700"
+              className="w-full bg-zinc-950/50 border border-zinc-800 text-[10px] rounded-lg py-1 px-3 focus:outline-none focus:border-blue-500/50 focus:bg-zinc-950 transition-all placeholder:text-zinc-700"
             />
           </div>
         </div>
@@ -62,15 +132,39 @@ export default function Sidebar({
                 {getLabel('Nyelv', 'Language', '语言')}
               </h2>
             </div>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-1 px-3 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer appearance-none"
-            >
-              {LANGUAGES.map(l => (
-                <option key={l.id} value={l.id} className="bg-zinc-900">{l.flag} {l.label}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setLangDropdownOpen(!langDropdownOpen);
+                  setAgeDropdownOpen(false);
+                  setCatDropdownOpen(false);
+                  setStyleDropdownOpen(false);
+                  setTmplDropdownOpen(false);
+                }}
+                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+              >
+                <span className="truncate">{LANGUAGES.find(l => l.id === language)?.flag} {LANGUAGES.find(l => l.id === language)?.label}</span>
+                <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${langDropdownOpen ? 'rotate-90' : ''}`} />
+              </button>
+
+              {langDropdownOpen && (
+                <div className="absolute left-0 right-0 mt-2 py-1 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-70 animate-in fade-in zoom-in-95 duration-150">
+                  {LANGUAGES.map(l => (
+                    <button
+                      key={l.id}
+                      onClick={() => {
+                        setLanguage(l.id);
+                        setLangDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${language === l.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                    >
+                      <span>{l.flag} {l.label}</span>
+                      {language === l.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </section>
 
           <section className="space-y-1">
@@ -80,17 +174,39 @@ export default function Sidebar({
                 {getLabel('Korosztály', 'Age', '年龄')}
               </h2>
             </div>
-            <select
-              value={ageGroup}
-              onChange={(e) => setAgeGroup(e.target.value)}
-              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-1 px-3 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer appearance-none"
-            >
-              {AGE_GROUPS.map(g => (
-                <option key={g.id} value={g.id} className="bg-zinc-900">
-                  {getLabel(g.label, g.label, g.label)}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setAgeDropdownOpen(!ageDropdownOpen);
+                  setLangDropdownOpen(false);
+                  setCatDropdownOpen(false);
+                  setStyleDropdownOpen(false);
+                  setTmplDropdownOpen(false);
+                }}
+                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+              >
+                <span className="truncate">{AGE_GROUPS.find(g => g.id === ageGroup)?.label}</span>
+                <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${ageDropdownOpen ? 'rotate-90' : ''}`} />
+              </button>
+
+              {ageDropdownOpen && (
+                <div className="absolute left-0 right-0 mt-2 py-1 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-70 animate-in fade-in zoom-in-95 duration-150">
+                  {AGE_GROUPS.map(g => (
+                    <button
+                      key={g.id}
+                      onClick={() => {
+                        setAgeGroup(g.id);
+                        setAgeDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${ageGroup === g.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                    >
+                      <span>{getLabel(g.label, g.label, g.label)}</span>
+                      {ageGroup === g.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </section>
         </div>
 
@@ -101,21 +217,40 @@ export default function Sidebar({
               {getLabel('Kategóriák', 'Categories', '类别')}
             </h2>
           </div>
-          <select
-            value={activeCat}
-            onChange={(e) => {
-              const catId = e.target.value;
-              setActiveCat(catId);
-              setActiveTemplate(CATEGORIES[catId.toUpperCase()].templates[0]);
-            }}
-            className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-1 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer appearance-none"
-          >
-            {Object.values(CATEGORIES).map(cat => (
-              <option key={cat.id} value={cat.id} className="bg-zinc-900">
-                {getLabel(cat.label, cat.label, cat.label)}
-              </option>
-            ))}
-          </select>
+          <div className="relative px-2">
+            <button
+              onClick={() => {
+                setCatDropdownOpen(!catDropdownOpen);
+                setLangDropdownOpen(false);
+                setAgeDropdownOpen(false);
+                setStyleDropdownOpen(false);
+                setTmplDropdownOpen(false);
+              }}
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+            >
+              <span className="truncate">{CATEGORIES[activeCat.toUpperCase()]?.label}</span>
+              <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${catDropdownOpen ? 'rotate-90' : ''}`} />
+            </button>
+
+            {catDropdownOpen && (
+              <div className="absolute left-2 right-2 mt-2 py-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-70 animate-in fade-in zoom-in-95 duration-150">
+                {Object.values(CATEGORIES).map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      setActiveCat(cat.id);
+                      setActiveTemplate(CATEGORIES[cat.id.toUpperCase()].templates[0]);
+                      setCatDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${activeCat === cat.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                  >
+                    <span>{getLabel(cat.label, cat.label, cat.label)}</span>
+                    {activeCat === cat.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </section>
 
         <section className="space-y-1">
@@ -125,19 +260,159 @@ export default function Sidebar({
               {getLabel('Sablonok', 'Templates', '模板')}
             </h2>
           </div>
-          <div className="space-y-1">
-            {sortedTemplates.map(tmpl => (
-              <button
-                key={tmpl.id}
-                onClick={() => setActiveTemplate(tmpl)}
-                className={`w-full text-left px-4 py-1 rounded-lg text-xs transition-all flex items-center justify-between group ${activeTemplate.id === tmpl.id ? 'bg-zinc-800 text-blue-400 font-bold' : 'text-zinc-500 hover:text-zinc-300'}`}
-              >
-                <span className="truncate">{tmpl.name}</span>
-                {activeTemplate.id === tmpl.id && <ChevronRight className="w-3 h-3" />}
-              </button>
-            ))}
+          <div className="relative px-2">
+            <button
+              onClick={() => {
+                setTmplDropdownOpen(!tmplDropdownOpen);
+                setLangDropdownOpen(false);
+                setAgeDropdownOpen(false);
+                setCatDropdownOpen(false);
+                setStyleDropdownOpen(false);
+              }}
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+            >
+              <span className="truncate">{activeTemplate.name}</span>
+              <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${tmplDropdownOpen ? 'rotate-90' : ''}`} />
+            </button>
+
+            {tmplDropdownOpen && (
+              <div className="absolute left-2 right-2 mt-2 py-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-70 max-h-64 overflow-y-auto custom-scrollbar animate-in fade-in zoom-in-95 duration-150">
+                {sortedTemplates.map(tmpl => (
+                  <button
+                    key={tmpl.id}
+                    onClick={() => {
+                      setActiveTemplate(tmpl);
+                      setTmplDropdownOpen(false);
+                      setHoveredTemplate(null);
+                    }}
+                    onMouseEnter={() => setHoveredTemplate(tmpl)}
+                    onMouseLeave={() => setHoveredTemplate(null)}
+                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${activeTemplate.id === tmpl.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                  >
+                    <span className="truncate">{tmpl.name}</span>
+                    {activeTemplate.id === tmpl.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </section>
+
+        <section className="space-y-1">
+          <div className="flex items-center px-2 mb-4 text-zinc-500">
+            <Palette className="w-3 h-3" />
+            <h2 className="text-xs font-bold uppercase tracking-widest ml-1.5">
+              {getLabel('Stílus', 'Style', '风格')}
+            </h2>
+          </div>
+          
+          <div className="relative px-2">
+            <button
+              onClick={() => {
+                setStyleDropdownOpen(!styleDropdownOpen);
+                setLangDropdownOpen(false);
+                setAgeDropdownOpen(false);
+                setCatDropdownOpen(false);
+                setTmplDropdownOpen(false);
+              }}
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-2 px-4 focus:outline-none focus:border-blue-500/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+            >
+              <span className="truncate">{getLabel(selectedStyle.name.hu, selectedStyle.name.en, selectedStyle.name.zh)}</span>
+              <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${styleDropdownOpen ? 'rotate-90' : ''}`} />
+            </button>
+
+            {styleDropdownOpen && (
+              <div className="absolute left-2 right-2 mt-2 py-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-60 max-h-64 overflow-y-auto custom-scrollbar animate-in fade-in zoom-in-95 duration-150">
+                {INFOGRAPHIC_STYLES.map(style => (
+                  <button
+                    key={style.id}
+                    onClick={() => {
+                      setSelectedStyle(style);
+                      setStyleDropdownOpen(false);
+                      setHoveredStyle(null);
+                    }}
+                    onMouseEnter={() => setHoveredStyle(style)}
+                    onMouseLeave={() => setHoveredStyle(null)}
+                    className={`w-full text-left px-4 py-2 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${selectedStyle.id === style.id ? 'text-blue-400 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                  >
+                    <span>{getLabel(style.name.hu, style.name.en, style.name.zh)}</span>
+                    {selectedStyle.id === style.id && <div className="w-1 h-1 rounded-full bg-blue-500" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Hover Preview Popup */}
+        {hoveredTemplate && (
+          <div className="hidden md:block absolute left-full top-0 ml-4 w-80 bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 rounded-2xl shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-left-4 duration-200">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-blue-400 mb-2">
+                <FileText className="w-4 h-4" />
+                <span className="text-xs font-black uppercase tracking-tighter">Sablon leírás</span>
+              </div>
+
+              <h3 className="text-sm font-bold text-zinc-100">{hoveredTemplate.name}</h3>
+
+              <div className="space-y-3">
+                <section>
+                  <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Feladat</h4>
+                  <p className="text-xs text-zinc-400 leading-relaxed italic">
+                    "{hoveredTemplate.task.replace('[TOPIC]', '...')}"
+                  </p>
+                </section>
+
+                <section>
+                  <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Oktatási cél</h4>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    {hoveredTemplate.goal}
+                  </p>
+                </section>
+
+                <div className="pt-2 flex flex-wrap gap-2">
+                  <span className="px-2 py-0.5 rounded bg-blue-500/10 text-[10px] font-bold text-blue-400 border border-blue-500/20">
+                    {hoveredTemplate.style}
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-zinc-800 text-[10px] font-bold text-zinc-400 border border-zinc-700">
+                    {hoveredTemplate.composition}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Style Hover Preview Popup */}
+        {hoveredStyle && (
+          <div className="hidden md:block absolute left-full top-0 ml-4 w-80 bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 rounded-2xl shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-left-4 duration-200">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-blue-400 mb-2">
+                <Palette className="w-4 h-4" />
+                <span className="text-xs font-black uppercase tracking-tighter">Stílus leírás</span>
+              </div>
+
+              <h3 className="text-sm font-bold text-zinc-100">
+                {getLabel(hoveredStyle.name.hu, hoveredStyle.name.en, hoveredStyle.name.zh)}
+              </h3>
+
+              <div className="space-y-3">
+                <section>
+                  <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Leírás</h4>
+                  <p className="text-xs text-zinc-400 leading-relaxed italic">
+                    {getLabel(hoveredStyle.description.hu, hoveredStyle.description.en, hoveredStyle.description.zh)}
+                  </p>
+                </section>
+
+                <div className="pt-2 flex flex-wrap gap-2">
+                  <span className="px-2 py-0.5 rounded bg-blue-500/10 text-[10px] font-bold text-blue-400 border border-blue-500/20">
+                    Prompt strictly in English
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );
