@@ -80,19 +80,21 @@ ${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label
       const isZh = language === 'zh';
       const systemInstruction = isHu
         ? `Te egy professzionális magyar oktatási szakértő és szövegszerkesztő vagy. Készíts egy részletes, 250-300 szavas szakmai vázlatot a megadott témáról. 
+A vázlat struktúrája és tartalma szorosan illeszkedjen a kiválasztott vizuális sablon céljához (pl. ha idővonal, akkor kronológiai; ha anatómia, akkor szerkezeti felbontás).
 SZIGORÚAN TARTSD BE A KÖVETKEZŐ MAGYAR STÍLUS-SZABÁLYOKAT:
 1. KERÜLD AZ AI-KLISÉKET: Soha ne használd ezeket: 'Fontos megjegyezni', 'Érdemes kiemelni', 'Összefoglalva elmondható', 'Mérföldkő', 'Végezetül'.
 2. TERMÉSZETES SZÓREND: Alkalmazz fókusz-alapú szórendet (a legfontosabb szó vagy az új információ közvetlenül az ige előtt álljon).
 3. MONDATRITMUS: Váltogasd a mondatok hosszát. Legyenek rövid, ütős mondatok is.
 4. TÖMÖRSÉG: Kerüld a terpeszkedő kifejezéseket (pl. 'szerepet játszik' → 'hat', 'végrehajtásra kerül' → 'elvégzik'). Ne használj passzív szerkezeteket.
 5. TIPOGRÁFIA: Használj magyar „alsó-felső” idézőjeleket és rövid - gondolatjeleket.`
-        : "You are a professional educational expert. Create a detailed 250-300 word professional outline for the given topic.";
+        : `You are a professional educational expert. Create a detailed 250-300 word professional outline for the given topic. 
+Adjust the outline structure to match the goal and task of the selected visual template (e.g., chronological for timelines, parts-based for anatomy).`;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKeyInput.trim()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `Téma: ${topic}. Nyelv: ${language}` }] }],
+          contents: [{ parts: [{ text: `Téma: ${topic}. Sablon: ${activeTemplate.name}. Sablon feladata: ${activeTemplate.task}. Sablon célja: ${activeTemplate.goal}. Nyelv: ${language}` }] }],
           systemInstruction: { parts: [{ text: systemInstruction }] }
         })
       });

@@ -1,6 +1,6 @@
-# Vizuál–Edu
+# Edugrapher
 
-**Vizuál–Edu** is a professional educational workflow designer and image prompt generator. It helps educators create structured visual content for various educational topics, tailored to specific age groups and languages.
+**Edugrapher** is a professional educational workflow designer and image prompt generator. It helps educators create structured visual content for various educational topics, tailored to specific age groups and languages.
 
 ## 🚀 Features
 

@@ -50,10 +50,10 @@ export default function Sidebar({
 
   return (
     <aside className="w-full md:w-80 bg-zinc-900 border-r border-zinc-800 flex flex-col shrink-0 relative">
-      <div className="p-6 border-b border-zinc-800 flex flex-col gap-2">
+      <div className="p-7 border-b border-zinc-800 flex flex-col gap-2">
         <div className="flex items-center gap-2 text-emerald-600">
           <Cpu className="w-5 h-5" />
-          <span className="text-sm font-black uppercase tracking-tighter">Vizuál–Edu</span>
+          <span className="text-sm font-black uppercase tracking-tighter">Edugrapher</span>
         </div>
       </div>
 
@@ -294,7 +294,7 @@ export default function Sidebar({
               {getLabel('Stílus', 'Style', '风格')}
             </h2>
           </div>
-          
+
           <div className="relative px-2">
             <button
               onClick={() => {
