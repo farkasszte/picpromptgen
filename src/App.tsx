@@ -59,9 +59,11 @@ export default function App() {
     return en;
   };
 
-  const getPromptSet = (t: any, topicStr: string, outlineStr: string, langId: string, ageId: string, stylePrompt = '') => {
+  const getPromptSet = (t: any, topicStr: string, outlineStr: string, langId: string, ageId: string, style: InfographicStyle) => {
     const currentLang = LANGUAGES.find(l => l.id === langId)!;
     const ageInfo = AGE_GROUPS.find(g => g.id === ageId)!.label;
+    const isDefaultStyle = style.id === 'default';
+    const styleName = getLabel(style.name.hu, style.name.en, style.name.zh);
 
     const base = formatText(`${getLabel('Feladat', 'Task', '任务')}:
 ${t.task.replace(/\[TOPIC\]/g, topicStr)}
@@ -70,15 +72,18 @@ ${getLabel('Tartalmi vázlat', 'Content Outline', '内容大纲')}:
 ${outlineStr}
 
 Technical Specification:
-– Style: ${t.style}
-– Composition: ${t.composition}
+– Core Illustration Style: ${t.style} ${!isDefaultStyle ? `(Thematic influence: ${styleName})` : ''}
+– Composition & Layout: ${t.composition}
 – Visual Elements: ${t.elements}
-– Color Palette: ${t.palette}
-– Lighting: ${t.lighting}
-${stylePrompt ? `– Visual Theme: ${stylePrompt}` : ''}
+– Color Palette: ${!isDefaultStyle ? `${styleName} palette (Overrides template: ${t.palette})` : t.palette}
+– Lighting: ${!isDefaultStyle ? `${styleName} lighting (Overrides template: ${t.lighting})` : t.lighting}
+${!isDefaultStyle ? `– Style Prompt: ${style.prompt}` : ''}
 
-${getLabel('Oktatási cél', 'Educational Goal', '教育目标')}: ${t.goal}
-${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label} (${ageInfo})`);
+${getLabel('Oktatási cél', 'Educational Goal', '教育 goal')}: ${t.goal}
+${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label} (${ageInfo})
+
+Linguistic Requirements:
+Pay strict attention to correct spelling, accented characters, and special characters of the given LANGUAGE (e.g. á, é, í, ö, ü, ő, ű for Hungarian). ALL labels, stage names, annotations, and technical notes throughout the entire infographic MUST be written in the specified LANGUAGE with correct grammar and diacritics. No mixing of languages except for english technical terms.`);
 
     return base;
   };
@@ -125,8 +130,7 @@ Adjust the outline structure to match the goal and task of the selected visual t
 
   const generateStandardPrompt = () => {
     if (!topic || !outline) return;
-    const stylePrompt = selectedStyle.prompt;
-    const standardPrompt = getPromptSet(activeTemplate, topic, outline, language, ageGroup, stylePrompt);
+    const standardPrompt = getPromptSet(activeTemplate, topic, outline, language, ageGroup, selectedStyle);
     setPrompts({ standard: standardPrompt, ai: null });
     setActiveTab('standard');
   };
@@ -137,8 +141,23 @@ Adjust the outline structure to match the goal and task of the selected visual t
     setErrorMessage('');
 
     try {
-      const systemInstruction = `You are a professional educational technologist. Refine the visual prompt. Always replace dashes with the minus sign (–). Return JSON with these keys: task, style, composition, elements, palette, lighting, goal, language, age_group. Use English for visual parameters. Populate language and age_group with the provided values.`;
-      const userMsg = `Topic: ${topic}. Outline: ${outline}. Template: ${activeTemplate.name}. Language: ${language}. Age Group: ${ageGroup}. Respond in JSON.`;
+      const styleName = getLabel(selectedStyle.name.hu, selectedStyle.name.en, selectedStyle.name.zh);
+      const systemInstruction = `You are a professional educational technologist. Refine the visual prompt. Always replace dashes with the minus sign (–). Return JSON with these keys: task, style, composition, elements, palette, lighting, goal, language, age_group. 
+Use English for visual parameters. 
+CRITICAL RULE for Template/Style interaction:
+1. The selected Visual Style (${styleName}) PRIMARY OVERRIDES the template's 'palette' and 'lighting' settings.
+2. For 'style', 'composition', and 'elements', the selected Visual Style acts as a SUPPLEMENT/COMPLEMENT to the existing template instructions.
+Merge these logically into a cohesive high-quality prompt.`;
+      
+      const userMsg = `Topic: ${topic}. 
+Outline: ${outline}. 
+Template Name: ${activeTemplate.name}. 
+Template Data: ${JSON.stringify(activeTemplate)}
+Selected Style: ${styleName}.
+Style Prompt to apply: ${selectedStyle.prompt}
+Language: ${language}. 
+Age Group: ${ageGroup}. 
+Respond in JSON.`;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKeyInput.trim()}`, {
         method: 'POST',
@@ -154,7 +173,7 @@ Adjust the outline structure to match the goal and task of the selected visual t
       const result = await response.json();
       const refinedData = JSON.parse(result.candidates[0].content.parts[0].text);
 
-      const aiPrompt = getPromptSet(refinedData, topic, outline, language, ageGroup, selectedStyle.prompt);
+      const aiPrompt = getPromptSet(refinedData, topic, outline, language, ageGroup, selectedStyle);
       setPrompts(prev => ({ 
         ...prev, 
         ai: aiPrompt,
