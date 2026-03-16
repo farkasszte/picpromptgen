@@ -11,13 +11,15 @@ import {
   RefreshCw,
   Edit3,
   Sparkles,
-  Wand2
+  Wand2,
+  Maximize
 } from 'lucide-react';
 import { 
   CATEGORIES, 
   AGE_GROUPS, 
   LANGUAGES, 
   INFOGRAPHIC_STYLES,
+  ASPECT_RATIOS,
   Template,
   InfographicStyle
 } from '../constants';
@@ -27,6 +29,8 @@ interface SidebarProps {
   setLanguage: (lang: string) => void;
   ageGroup: string;
   setAgeGroup: (age: string) => void;
+  aspectRatio: string;
+  setAspectRatio: (ratio: string) => void;
   activeCat: string;
   setActiveCat: (cat: string) => void;
   activeTemplate: Template;
@@ -51,6 +55,8 @@ export default function Sidebar({
   setLanguage,
   ageGroup,
   setAgeGroup,
+  aspectRatio,
+  setAspectRatio,
   activeCat,
   setActiveCat,
   activeTemplate,
@@ -76,6 +82,7 @@ export default function Sidebar({
   const [ageDropdownOpen, setAgeDropdownOpen] = useState(false);
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
   const [tmplDropdownOpen, setTmplDropdownOpen] = useState(false);
+  const [ratioDropdownOpen, setRatioDropdownOpen] = useState(false);
 
   return (
     <aside className="w-full md:w-80 bg-zinc-900 border-r border-zinc-800 flex flex-col shrink-0 relative">
@@ -159,7 +166,7 @@ export default function Sidebar({
                   setStyleDropdownOpen(false);
                   setTmplDropdownOpen(false);
                 }}
-                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+                className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
               >
                 <span className="truncate">{LANGUAGES.find(l => l.id === language)?.flag} {LANGUAGES.find(l => l.id === language)?.label}</span>
                 <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${langDropdownOpen ? 'rotate-90' : ''}`} />
@@ -174,7 +181,7 @@ export default function Sidebar({
                         setLanguage(l.id);
                         setLangDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${language === l.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${language === l.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                     >
                       <span>{l.flag} {l.label}</span>
                       {language === l.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
@@ -201,7 +208,7 @@ export default function Sidebar({
                   setStyleDropdownOpen(false);
                   setTmplDropdownOpen(false);
                 }}
-                className="w-full bg-zinc-950 border border-zinc-800 text-[10px] font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+                className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
               >
                 <span className="truncate">{AGE_GROUPS.find(g => g.id === ageGroup)?.label}</span>
                 <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${ageDropdownOpen ? 'rotate-90' : ''}`} />
@@ -216,7 +223,7 @@ export default function Sidebar({
                         setAgeGroup(g.id);
                         setAgeDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 text-[10px] transition-colors hover:bg-zinc-800 flex items-center justify-between ${ageGroup === g.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${ageGroup === g.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
                     >
                       <span>{getLabel(g.label, g.label, g.label)}</span>
                       {ageGroup === g.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
@@ -227,6 +234,49 @@ export default function Sidebar({
             </div>
           </section>
         </div>
+
+        <section className="space-y-1 px-1">
+          <div className="flex items-center gap-2 px-2 text-zinc-500">
+            <Maximize className="w-3 h-3" />
+            <h2 className="text-xs font-bold uppercase tracking-widest">
+              {getLabel('Képarány', 'Aspect Ratio', '宽高比')}
+            </h2>
+          </div>
+          <div className="relative">
+            <button
+              onClick={() => {
+                setRatioDropdownOpen(!ratioDropdownOpen);
+                setLangDropdownOpen(false);
+                setAgeDropdownOpen(false);
+                setCatDropdownOpen(false);
+                setStyleDropdownOpen(false);
+                setTmplDropdownOpen(false);
+              }}
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-400 rounded-xl py-1.5 px-3 focus:outline-none focus:border-emerald-600/50 transition-all cursor-pointer flex items-center justify-between group hover:border-zinc-700"
+            >
+              <span className="truncate">{ASPECT_RATIOS.find(r => r.id === aspectRatio)?.label}</span>
+              <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${ratioDropdownOpen ? 'rotate-90' : ''}`} />
+            </button>
+
+            {ratioDropdownOpen && (
+              <div className="absolute left-0 right-0 mt-2 py-1 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-70 animate-in fade-in zoom-in-95 duration-150">
+                {ASPECT_RATIOS.map(r => (
+                  <button
+                    key={r.id}
+                    onClick={() => {
+                      setAspectRatio(r.id);
+                      setRatioDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 text-xs transition-colors hover:bg-zinc-800 flex items-center justify-between ${aspectRatio === r.id ? 'text-emerald-500 font-bold bg-zinc-800/50' : 'text-zinc-500'}`}
+                  >
+                    <span>{r.label}</span>
+                    {aspectRatio === r.id && <div className="w-1 h-1 rounded-full bg-emerald-600" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
 
         <section className="space-y-1">
           <div className="flex items-center px-2 mb-4 text-zinc-500">

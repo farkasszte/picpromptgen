@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES, Template, InfographicStyle } from './constants';
+import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES, ASPECT_RATIOS, Template, InfographicStyle } from './constants';
 import Sidebar from './components/Sidebar';
 import GeneratorHeader from './components/GeneratorHeader';
 import PromptResult from './components/PromptResult';
@@ -22,6 +22,7 @@ export default function App() {
   const [activeTemplate, setActiveTemplate] = useState<Template>(CATEGORIES.PRESENTATION.templates[0]);
   const [selectedStyle, setSelectedStyle] = useState<InfographicStyle>(INFOGRAPHIC_STYLES[0]);
   const [ageGroup, setAgeGroup] = useState<string>('14-18');
+  const [aspectRatio, setAspectRatio] = useState<string>('16:9');
   const [language, setLanguage] = useState<string>('hu');
   const [topic, setTopic] = useState<string>('');
   const [outline, setOutline] = useState<string>('');
@@ -47,8 +48,6 @@ export default function App() {
   }, [apiKeyInput]);
 
 
-  const formatText = (text: string) => text.replace(/-/g, '–');
-
   const sortedTemplates = [...CATEGORIES[activeCat.toUpperCase()].templates].sort((a, b) =>
     a.name.localeCompare(b.name, language === 'hu' ? 'hu' : (language === 'zh' ? 'zh' : 'en'))
   );
@@ -59,31 +58,33 @@ export default function App() {
     return en;
   };
 
-  const getPromptSet = (t: any, topicStr: string, outlineStr: string, langId: string, ageId: string, style: InfographicStyle) => {
+  const getPromptSet = (t: any, topicStr: string, outlineStr: string, langId: string, ageId: string, ratioId: string, style: InfographicStyle) => {
     const currentLang = LANGUAGES.find(l => l.id === langId)!;
     const ageInfo = AGE_GROUPS.find(g => g.id === ageId)!.label;
+    const ratioInfo = ASPECT_RATIOS.find(r => r.id === ratioId)?.value || '16:9';
     const isDefaultStyle = style.id === 'default';
     const styleName = getLabel(style.name.hu, style.name.en, style.name.zh);
 
-    const base = formatText(`${getLabel('Feladat', 'Task', '任务')}:
+    const base = `${getLabel('Feladat', 'Task', '任务')}:
 ${t.task.replace(/\[TOPIC\]/g, topicStr)}
 
 ${getLabel('Tartalmi vázlat', 'Content Outline', '内容大纲')}:
 ${outlineStr}
 
 Technical Specification:
-– Core Illustration Style: ${t.style} ${!isDefaultStyle ? `(Thematic influence: ${styleName})` : ''}
-– Composition & Layout: ${t.composition}
-– Visual Elements: ${t.elements}
-– Color Palette: ${!isDefaultStyle ? `${styleName} palette (Overrides template: ${t.palette})` : t.palette}
-– Lighting: ${!isDefaultStyle ? `${styleName} lighting (Overrides template: ${t.lighting})` : t.lighting}
-${!isDefaultStyle ? `– Style Prompt: ${style.prompt}` : ''}
+Core Illustration Style: ${t.style} ${!isDefaultStyle ? `(Thematic influence: ${styleName})` : ''}
+Composition & Layout: ${t.composition}
+Visual Elements: ${t.elements}
+Color Palette: ${!isDefaultStyle ? `${styleName} palette (Overrides template: ${t.palette})` : t.palette}
+Lighting: ${!isDefaultStyle ? `${styleName} lighting (Overrides template: ${t.lighting})` : t.lighting}
+Aspect Ratio: ${ratioInfo}
+${!isDefaultStyle ? `Style Prompt: ${style.prompt}` : ''}
 
 ${getLabel('Oktatási cél', 'Educational Goal', '教育 goal')}: ${t.goal}
 ${getLabel('Célnyelv', 'Target Language', '目标语言')}: ${currentLang.label} (${ageInfo})
 
 Linguistic Requirements:
-Pay strict attention to correct spelling, accented characters, and special characters of the given LANGUAGE (e.g. á, é, í, ö, ü, ő, ű for Hungarian). ALL labels, stage names, annotations, and technical notes throughout the entire infographic MUST be written in the specified LANGUAGE with correct grammar and diacritics. No mixing of languages except for english technical terms.`);
+Pay strict attention to correct spelling, accented characters, and special characters of the given LANGUAGE (e.g. á, é, í, ö, ü, ő, ű for Hungarian). ALL labels, stage names, annotations, and technical notes throughout the entire infographic MUST be written in the specified LANGUAGE with correct grammar and diacritics. No mixing of languages except for English technical terms.`;
 
     return base;
   };
@@ -130,7 +131,7 @@ Adjust the outline structure to match the goal and task of the selected visual t
 
   const generateStandardPrompt = () => {
     if (!topic || !outline) return;
-    const standardPrompt = getPromptSet(activeTemplate, topic, outline, language, ageGroup, selectedStyle);
+    const standardPrompt = getPromptSet(activeTemplate, topic, outline, language, ageGroup, aspectRatio, selectedStyle);
     setPrompts({ standard: standardPrompt, ai: null });
     setActiveTab('standard');
   };
@@ -142,13 +143,13 @@ Adjust the outline structure to match the goal and task of the selected visual t
 
     try {
       const styleName = getLabel(selectedStyle.name.hu, selectedStyle.name.en, selectedStyle.name.zh);
-      const systemInstruction = `You are a professional educational technologist. Refine the visual prompt. Always replace dashes with the minus sign (–). Return JSON with these keys: task, style, composition, elements, palette, lighting, goal, language, age_group. 
+      const systemInstruction = `You are a professional educational technologist. Refine the visual prompt. Return JSON with these keys: task, style, composition, elements, palette, lighting, goal, language, age_group. 
 Use English for visual parameters. 
 CRITICAL RULE for Template/Style interaction:
 1. The selected Visual Style (${styleName}) PRIMARY OVERRIDES the template's 'palette' and 'lighting' settings.
 2. For 'style', 'composition', and 'elements', the selected Visual Style acts as a SUPPLEMENT/COMPLEMENT to the existing template instructions.
 Merge these logically into a cohesive high-quality prompt.`;
-      
+
       const userMsg = `Topic: ${topic}. 
 Outline: ${outline}. 
 Template Name: ${activeTemplate.name}. 
@@ -173,9 +174,9 @@ Respond in JSON.`;
       const result = await response.json();
       const refinedData = JSON.parse(result.candidates[0].content.parts[0].text);
 
-      const aiPrompt = getPromptSet(refinedData, topic, outline, language, ageGroup, selectedStyle);
-      setPrompts(prev => ({ 
-        ...prev, 
+      const aiPrompt = getPromptSet(refinedData, topic, outline, language, ageGroup, aspectRatio, selectedStyle);
+      setPrompts(prev => ({
+        ...prev,
         ai: aiPrompt,
         aiParams: JSON.stringify(refinedData, null, 2)
       }));
@@ -212,6 +213,8 @@ Respond in JSON.`;
         setLanguage={setLanguage}
         ageGroup={ageGroup}
         setAgeGroup={setAgeGroup}
+        aspectRatio={aspectRatio}
+        setAspectRatio={setAspectRatio}
         activeCat={activeCat}
         setActiveCat={setActiveCat}
         activeTemplate={activeTemplate}

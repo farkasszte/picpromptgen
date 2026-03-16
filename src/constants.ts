@@ -37,6 +37,12 @@ export interface AgeGroup {
   label: string;
 }
 
+export interface AspectRatio {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface LocalizedString {
   hu: string;
   en: string;
@@ -141,9 +147,17 @@ export const CATEGORIES: Record<string, Category> = {
 };
 
 export const AGE_GROUPS: AgeGroup[] = [
-  { id: '10-14', label: '10-14 év (alapfok)' },
-  { id: '14-18', label: '14-18 év (középfok)' },
-  { id: '18+', label: '18+ év (felsőfok)' }
+  { id: '10-14', label: '10-14 év' },
+  { id: '14-18', label: '14-18 év' },
+  { id: '18+', label: '18+ év' }
+];
+
+export const ASPECT_RATIOS: AspectRatio[] = [
+  { id: '1:1', label: '1:1 (Négyzet)', value: '1:1' },
+  { id: '16:9', label: '16:9 (Fekvő)', value: '16:9' },
+  { id: '9:16', label: '9:16 (Álló)', value: '9:16' },
+  { id: '4:5', label: '4:5 (Portré)', value: '4:5' },
+  { id: '3:2', label: '3:2 (Klasszikus)', value: '3:2' }
 ];
 
 export const LANGUAGES: Language[] = [
