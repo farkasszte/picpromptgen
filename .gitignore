@@ -5,3 +5,6 @@ dist
 .env.*.local
 .DS_Store
 *.local
+.agents/
+graphify-out/
+.graphifyignore
