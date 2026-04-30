@@ -2,7 +2,8 @@ import {
   Search,
   Edit3,
   Layout,
-  Zap
+  Zap,
+  ExternalLink
 } from 'lucide-react';
 
 interface Prompts {
@@ -60,6 +61,13 @@ export default function GeneratorHeader({
                 className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'ai' ? 'bg-zinc-800 text-purple-400 shadow-lg border border-zinc-700' : 'text-zinc-600 hover:text-zinc-400'} disabled:opacity-20`}
               >
                 <Zap className="w-3 h-3" /> AI {getLabel('Finomított', 'Refined', '优化')}
+              </button>
+              <button
+                onClick={() => setActiveTab('preview')}
+                disabled={!prompts.standard && !prompts.ai}
+                className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'preview' ? 'bg-zinc-800 text-amber-500 shadow-lg border border-zinc-700' : 'text-zinc-600 hover:text-zinc-400'} disabled:opacity-20`}
+              >
+                <ExternalLink className="w-3 h-3" /> {getLabel('Nézet', 'Preview', '预览')}
               </button>
             </div>
           )}

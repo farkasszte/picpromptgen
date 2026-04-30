@@ -54,6 +54,7 @@ export interface InfographicStyle {
   name: LocalizedString;
   description: LocalizedString;
   prompt: string;
+  previewImage?: string;
 }
 
 export const CATEGORIES: Record<string, Category> = {
@@ -160,6 +161,17 @@ export const ASPECT_RATIOS: AspectRatio[] = [
   { id: '3:2', label: '3:2 (Klasszikus)', value: '3:2' }
 ];
 
+export interface ImageModel {
+  id: string;
+  name: string;
+  label: LocalizedString;
+}
+
+export const IMAGE_MODELS: ImageModel[] = [
+  { id: 'gemini-2.5-flash-image', name: 'Nanobana', label: { hu: 'Nanobana (Gemini 2.5)', en: 'Nanobana (Gemini 2.5)', zh: 'Nanobana (Gemini 2.5)' } },
+  { id: 'gemini-3.1-flash-image-preview', name: 'Nanobana 2', label: { hu: 'Nanobana 2 (Gemini 3.1)', en: 'Nanobana 2 (Gemini 3.1)', zh: 'Nanobana 2 (Gemini 3.1)' } }
+];
+
 export const LANGUAGES: Language[] = [
   { id: 'hu', label: 'Magyar', flag: 'HU' },
   { id: 'en', label: 'Angol', flag: 'EN' },
@@ -177,13 +189,15 @@ export const INFOGRAPHIC_STYLES: InfographicStyle[] = [
     id: 'brutalist',
     name: { hu: 'Brutalista', en: 'Brutalist', zh: '野兽派' },
     description: { hu: 'Ultra-modern szerkesztő plakát stílus, brutalista grafikai design, magas kontrasztú skicc illusztrációk.', en: 'Ultra-modern editorial poster style, brutalist graphic design, high-contrast sketch illustrations.', zh: '超现代编辑海报风格，野兽派图形设计，高对比度素描插图。' },
-    prompt: 'Ultra-modern editorial poster style, brutalist graphic design, high-contrast neo-noir black and white sketch illustrations, bold red accent blocks, Swiss typography meets experimental grunge layouts, layered collage compositions, fragmented geometric shapes, overlapping text blocks and truncated titles, worn ink textures, grainy xerox noise, asymmetric grid systems, abstract architectural lines, stencil typography, journal-cover aesthetic, contemporary avant-garde design, sharp lighting with deep shadows, high detail, dramatic contrast, minimal color palette (black, white, red), chaotic yet structured compositions, urban underground feel, premium poster print.'
+    prompt: 'Ultra-modern editorial poster style, brutalist graphic design, high-contrast neo-noir black and white sketch illustrations, bold red accent blocks, Swiss typography meets experimental grunge layouts, layered collage compositions, fragmented geometric shapes, overlapping text blocks and truncated titles, worn ink textures, grainy xerox noise, asymmetric grid systems, abstract architectural lines, stencil typography, journal-cover aesthetic, contemporary avant-garde design, sharp lighting with deep shadows, high detail, dramatic contrast, minimal color palette (black, white, red), chaotic yet structured compositions, urban underground feel, premium poster print.',
+    previewImage: '/styles/brutalist.png'
   },
   {
     id: 'neo-noir',
     name: { hu: 'Sötét neo-noir', en: 'Dark Neo-Noir', zh: '黑暗新黑色' },
     description: { hu: 'Sötét neo-noir expresszionista festmény, brutális filmszerű atmoszféra, drámai megvilágítás.', en: 'Dark neo-noir expressionist painting, brutal cinematic atmosphere, dramatic lighting.', zh: '黑暗新黑色表现主义绘画，残酷的电影氛围，戏剧性的灯光。' },
-    prompt: 'Dark neo-noir expressionist painting, brutal cinematic atmosphere, bold red and deep black dominant palette with muted grey undertones, dramatic high-contrast lighting, sharp chiaroscuro shadows, aggressive painterly brushstrokes, oil paint effect, abstract splash and smear overlays, rough palette knife strokes, urban crime poster aesthetic, somber and intense tone, subtle grunge texture, layered paint depth, strong focal contrast, modern graphic novel realism, slightly desaturated skin tones against vivid red highlights, raw and powerful composition, high detail, dramatic editorial style.'
+    prompt: 'Dark neo-noir expressionist painting, brutal cinematic atmosphere, bold red and deep black dominant palette with muted grey undertones, dramatic high-contrast lighting, sharp chiaroscuro shadows, aggressive painterly brushstrokes, oil paint effect, abstract splash and smear overlays, rough palette knife strokes, urban crime poster aesthetic, somber and intense tone, subtle grunge texture, layered paint depth, strong focal contrast, modern graphic novel realism, slightly desaturated skin tones against vivid red highlights, raw and powerful composition, high detail, dramatic editorial style.',
+    previewImage: '/styles/neonoir.png'
   },
   {
     id: 'manga',
@@ -195,7 +209,8 @@ export const INFOGRAPHIC_STYLES: InfographicStyle[] = [
     id: 'cyberpunk',
     name: { hu: 'Cyberpunk / Tech', en: 'Cyberpunk / Tech', zh: '赛博朋克 / 科技' },
     description: { hu: 'Futurisztikus sötét téma neon fényekkel, ragyogó effektekkel.', en: 'Futuristic dark theme with neon lights and glowing effects.', zh: '带有霓虹灯和发光效果的未来主义黑暗主题。' },
-    prompt: 'Tech trend infographic, cyberpunk-inspired dark theme. Dark background with neon turquoise and magenta highlights. A strong statistic or prediction displayed prominently. Glowing effects on key elements, futuristic sans-serif font. Designed for instant understanding, optimized for social media.'
+    prompt: 'Tech trend infographic, cyberpunk-inspired dark theme. Dark background with neon turquoise and magenta highlights. A strong statistic or prediction displayed prominently. Glowing effects on key elements, futuristic sans-serif font. Designed for instant understanding, optimized for social media.',
+    previewImage: '/styles/cyberpunk.png'
   },
   {
     id: 'architecture',
@@ -249,7 +264,8 @@ export const INFOGRAPHIC_STYLES: InfographicStyle[] = [
     id: 'vulgarisation',
     name: { hu: 'Ismeretterjesztés', en: 'Educational Explainer', zh: '知识普及' },
     description: { hu: 'Flat design illusztráció, Kurzgesagt-stílus, barátságos ikonok.', en: 'Flat design illustration, Kurzgesagt-style, friendly icons.', zh: '扁平化设计插图，Kurzgesagt 风格，友好的图标。' },
-    prompt: 'Flat design illustration, Kurzgesagt-style, soft pastel colors with warm highlights. Simplified rounded shapes, friendly icons, clean visual flow. Top-down structure: concept → mechanism → outcome.'
+    prompt: 'Flat design illustration, Kurzgesagt-style, soft pastel colors with warm highlights. Simplified rounded shapes, friendly icons, clean visual flow. Top-down structure: concept → mechanism → outcome.',
+    previewImage: '/styles/kurzgesagt.png'
   },
   {
     id: 'mini-world',

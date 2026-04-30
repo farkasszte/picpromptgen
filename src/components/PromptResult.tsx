@@ -8,7 +8,8 @@ import {
   Key,
   ExternalLink,
   Settings,
-  ShieldCheck
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 
 interface Prompts {
@@ -26,6 +27,10 @@ interface PromptResultProps {
   copyStatus: Record<string, boolean>;
   copyToClipboard: (id: string, text: string) => void;
   getLabel: (hu: string, en: string, zh: string) => string;
+  generateImage: () => void;
+  previewImage: string | null;
+  imageLoading: boolean;
+  aspectRatio: string;
 }
 
 export default function PromptResult({
@@ -36,7 +41,11 @@ export default function PromptResult({
   setPrompts,
   copyStatus,
   copyToClipboard,
-  getLabel
+  getLabel,
+  generateImage,
+  previewImage,
+  imageLoading,
+  aspectRatio
 }: PromptResultProps) {
 
   const renderSingleResult = (content: string | null, isJson = false) => {
@@ -47,9 +56,9 @@ export default function PromptResult({
       ? getLabel('Generált Prompt', 'Generated Prompt', '生成的提示词')
       : activeTab === 'ai'
       ? getLabel('AI Finomított Prompt', 'AI Refined Prompt', 'AI 细化提示词')
-      : '';
+      : getLabel('Vizuális Előnézet', 'Visual Preview', '视觉预览');
 
-    const icon = <Palette className="w-4 h-4" />;
+    const icon = activeTab === 'preview' ? <ExternalLink className="w-4 h-4" /> : <Palette className="w-4 h-4" />;
 
     return (
       <div className="space-y-6">
@@ -58,16 +67,70 @@ export default function PromptResult({
             {icon}
             <h3 className="text-xs font-black uppercase tracking-widest">{header}</h3>
           </div>
-          <button
-            onClick={() => copyToClipboard(activeTab, content)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${copyStatus[activeTab] ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white'}`}
-          >
-            {copyStatus[activeTab] ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            {copyStatus[activeTab] ? getLabel('MÁSOLVA', 'COPIED', '已复制') : getLabel('MÁSOLÁS', 'COPY', '复制')}
-          </button>
+          {activeTab !== 'preview' && (
+            <button
+              onClick={() => copyToClipboard(activeTab, content)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${copyStatus[activeTab] ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white'}`}
+            >
+              {copyStatus[activeTab] ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              {copyStatus[activeTab] ? getLabel('MÁSOLVA', 'COPIED', '已复制') : getLabel('MÁSOLÁS', 'COPY', '复制')}
+            </button>
+          )}
         </div>
-        <div className={`p-8 rounded-3xl border shadow-2xl transition-all ${isJson ? 'bg-zinc-900/80 border-zinc-700/50' : 'bg-zinc-900 border-zinc-800'}`}>
-          <pre className={`font-mono leading-relaxed whitespace-pre-wrap ${isJson ? 'text-xs text-zinc-400' : 'text-sm text-zinc-300'}`}>{content}</pre>
+        <div className={`p-10 rounded-3xl border shadow-2xl transition-all ${isJson ? 'bg-zinc-900/80 border-zinc-700/50' : 'bg-zinc-900 border-zinc-800'}`}>
+          {activeTab === 'preview' ? (
+            <div className="flex flex-col gap-6">
+              <div className={`relative w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 group shadow-inner ${
+                aspectRatio === '16:9' ? 'aspect-video' : (aspectRatio === '9:16' ? 'aspect-[9/16]' : 'aspect-square')
+              }`}>
+                {previewImage ? (
+                  <img 
+                    src={previewImage} 
+                    alt="AI Preview"
+                    className="w-full h-full object-contain animate-in fade-in zoom-in duration-1000"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-zinc-700">
+                    {imageLoading ? (
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
+                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 animate-pulse">
+                          {getLabel('Kép generálása...', 'Generating image...', '生成图像...')}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <Palette className="w-12 h-12 opacity-20" />
+                        <p className="text-[10px] font-black uppercase tracking-widest opacity-50">
+                          {getLabel('Kattints a generáláshoz', 'Click to generate', '点击生成')}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-linear-to-t from-zinc-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                  <p className="text-[10px] text-zinc-400 italic">
+                    Powered by Gemini 2.5 Flash Image
+                  </p>
+                </div>
+              </div>
+              
+              <button
+                onClick={generateImage}
+                disabled={imageLoading}
+                className="w-full py-4 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-emerald-900/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              >
+                {imageLoading ? (
+                  <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Zap className="w-4 h-4" />
+                )}
+                {getLabel('Generálás Gemini 2.5 Flash-sel', 'Generate with Gemini 2.5 Flash', '使用 Gemini 2.5 Flash 生成')}
+              </button>
+            </div>
+          ) : (
+            <pre className={`font-mono leading-relaxed whitespace-pre-wrap ${isJson ? 'text-xs text-zinc-400' : 'text-sm text-zinc-300'}`}>{content}</pre>
+          )}
         </div>
       </div>
     );
@@ -171,6 +234,7 @@ export default function PromptResult({
           </div>
         )}
         {activeTab === 'standard' && renderSingleResult(prompts.standard)}
+        {activeTab === 'preview' && renderSingleResult(prompts.ai || prompts.standard)}
         {activeTab === 'ai' && (
           <div className="space-y-12">
             {renderSingleResult(prompts.ai)}

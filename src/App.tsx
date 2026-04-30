@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES, ASPECT_RATIOS, Template, InfographicStyle } from './constants';
+import { CATEGORIES, AGE_GROUPS, LANGUAGES, INFOGRAPHIC_STYLES, ASPECT_RATIOS, IMAGE_MODELS, Template, InfographicStyle, ImageModel } from './constants';
 import Sidebar from './components/Sidebar';
 import GeneratorHeader from './components/GeneratorHeader';
 import PromptResult from './components/PromptResult';
@@ -25,16 +25,19 @@ export default function App() {
   const [aspectRatio, setAspectRatio] = useState<string>('16:9');
   const [language, setLanguage] = useState<string>('hu');
   const [topic, setTopic] = useState<string>('');
+  const [imageModel, setImageModel] = useState<ImageModel>(IMAGE_MODELS[0]);
   const [outline, setOutline] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('vázlat');
   const [prompts, setPrompts] = useState<Prompts>({
     standard: null,
     ai: null
   });
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const [loading, setLoading] = useState<LoadingState>({
+  const [loading, setLoading] = useState<LoadingState & { image: boolean }>({
     outline: false,
-    ai: false
+    ai: false,
+    image: false
   });
 
   const [copyStatus, setCopyStatus] = useState<Record<string, boolean>>({});
@@ -188,6 +191,53 @@ Respond in JSON.`;
     }
   };
 
+  const generateImage = async () => {
+    const promptToUse = prompts.ai || prompts.standard;
+    if (!promptToUse || !apiKeyInput) return;
+    
+    setLoading(prev => ({ ...prev, image: true }));
+    setPreviewImage(null);
+    setErrorMessage('');
+
+    try {
+      // Gemini Flash Image REST endpoint using selected model
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${imageModel.id}:generateContent?key=${apiKeyInput.trim()}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptToUse }] }],
+          generationConfig: {
+            // Note: aspect_ratio is often inferred from the model or set in specific params.
+          }
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData?.error?.message || "Image API error.");
+      }
+
+      const result = await response.json();
+      console.log('Gemini Image Result:', result);
+      
+      const parts = result.candidates?.[0]?.content?.parts;
+      const inlineData = parts?.find((p: any) => p.inlineData)?.inlineData;
+      
+      if (inlineData?.data) {
+        setPreviewImage(`data:${inlineData.mimeType || 'image/png'};base64,${inlineData.data}`);
+      } else {
+        // Some models might return text describing why it couldn't generate the image (safety filters)
+        const textPart = parts?.find((p: any) => p.text)?.text;
+        throw new Error(textPart || "No image data returned from Gemini.");
+      }
+    } catch (error: any) {
+      console.error(error);
+      setErrorMessage(getLabel("Hiba a kép generálása során (Imagen 3). Ellenőrizze az API kulcsot és a kvótát.", "Error generating image (Imagen 3). Check API key and quota.", "生成图像时出错（Imagen 3）。请检查 API 密钥和配额。"));
+    } finally {
+      setLoading(prev => ({ ...prev, image: false }));
+    }
+  };
+
   const copyToClipboard = (id: string, text: string) => {
     const textArea = document.createElement("textarea");
     textArea.value = text;
@@ -232,6 +282,8 @@ Respond in JSON.`;
         loading={loading}
         outline={outline}
         prompts={prompts}
+        imageModel={imageModel}
+        setImageModel={setImageModel}
       />
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden bg-zinc-950">
@@ -250,7 +302,7 @@ Respond in JSON.`;
         />
 
         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-          <div className="max-w-4xl mx-auto space-y-8">
+          <div className="max-w-6xl mx-auto space-y-8">
             <PromptResult
               activeTab={activeTab}
               outline={outline}
@@ -260,6 +312,10 @@ Respond in JSON.`;
               copyStatus={copyStatus}
               copyToClipboard={copyToClipboard}
               getLabel={getLabel}
+              generateImage={generateImage}
+              previewImage={previewImage}
+              imageLoading={loading.image}
+              aspectRatio={aspectRatio}
             />
           </div>
         </div>

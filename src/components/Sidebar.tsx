@@ -16,12 +16,14 @@ import {
 } from 'lucide-react';
 import { 
   CATEGORIES, 
-  AGE_GROUPS, 
   LANGUAGES, 
-  INFOGRAPHIC_STYLES,
-  ASPECT_RATIOS,
-  Template,
-  InfographicStyle
+  AGE_GROUPS, 
+  ASPECT_RATIOS, 
+  INFOGRAPHIC_STYLES, 
+  Template, 
+  InfographicStyle, 
+  ImageModel, 
+  IMAGE_MODELS 
 } from '../constants';
 
 interface SidebarProps {
@@ -45,9 +47,11 @@ interface SidebarProps {
   generateOutline: () => void;
   generateStandardPrompt: () => void;
   refineWithAI: () => void;
-  loading: { outline: boolean; ai: boolean };
+  loading: LoadingState;
   outline: string;
-  prompts: { standard: string | null; ai: string | null };
+  prompts: Prompts;
+  imageModel: ImageModel;
+  setImageModel: (model: ImageModel) => void;
 }
 
 export default function Sidebar({
@@ -68,10 +72,12 @@ export default function Sidebar({
   selectedStyle,
   setSelectedStyle,
   topic,
+  imageModel,
+  setImageModel,
+  loading,
   generateOutline,
   generateStandardPrompt,
   refineWithAI,
-  loading,
   outline,
   prompts
 }: SidebarProps) {
@@ -130,7 +136,7 @@ export default function Sidebar({
       </div>
 
       {/* API Key Settings */}
-      <div className="p-4 border-b border-zinc-800 bg-zinc-900/50">
+      <div className="p-4 border-b border-zinc-800 bg-zinc-900/50 space-y-4">
         <div className="flex items-center gap-4 px-2">
           <div className="flex items-center gap-2 shrink-0">
             <Key className="w-3 h-3 text-zinc-500" />
@@ -144,6 +150,29 @@ export default function Sidebar({
               onChange={(e) => setApiKeyInput(e.target.value)}
               className="w-full bg-zinc-950/50 border border-zinc-800 text-[10px] rounded-lg py-1 px-3 focus:outline-none focus:border-emerald-600/50 focus:bg-zinc-950 transition-all placeholder:text-zinc-700"
             />
+          </div>
+        </div>
+
+        {/* Image Model Selection */}
+        <div className="space-y-2 px-2">
+          <div className="flex items-center gap-2 text-zinc-500 mb-1">
+            <Palette className="w-3 h-3" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">{getLabel('Képgeneráló Modell', 'Image Model', '图像生成模型')}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {IMAGE_MODELS.map((model) => (
+              <button
+                key={model.id}
+                onClick={() => setImageModel(model)}
+                className={`px-3 py-2 rounded-xl text-left transition-all border ${
+                  imageModel.id === model.id
+                    ? 'bg-emerald-600/10 border-emerald-500/50 text-emerald-400 shadow-lg shadow-emerald-900/10'
+                    : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300'
+                }`}
+              >
+                <div className="text-[9px] font-black uppercase tracking-tighter truncate">{model.name}</div>
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -463,6 +492,17 @@ export default function Sidebar({
               <h3 className="text-sm font-bold text-zinc-100">
                 {getLabel(hoveredStyle.name.hu, hoveredStyle.name.en, hoveredStyle.name.zh)}
               </h3>
+
+              {hoveredStyle.previewImage && (
+                <div className="relative aspect-video rounded-xl overflow-hidden border border-zinc-800 shadow-inner group-hover:border-emerald-500/30 transition-all">
+                  <img 
+                    src={hoveredStyle.previewImage} 
+                    alt={hoveredStyle.name.en}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-zinc-950/60 to-transparent" />
+                </div>
+              )}
 
               <div className="space-y-3">
                 <section>
